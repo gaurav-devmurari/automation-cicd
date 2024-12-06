@@ -1,0 +1,42 @@
+<div class="logo w-56 m-auto mt-20"></div>
+<div
+  class="bg-onyx w-[450px] border-solid border-charcoal border-2 p-7 rounded-lg m-auto mb-10"
+>
+  <form class="max-w-md mx-auto" [formGroup]="loginForm" (ngSubmit)="login()">
+    <h1
+      class="text-xl font-bold tracking-wide text-white md:text-2xl dark:text-white pb-4 text-center"
+    >
+      Sign in
+    </h1>
+    <aut-input
+      variant="secondary"
+      name="email"
+      placeholder="Enter Email"
+      formControlName="email"
+      class="mb-3"
+    ></aut-input>
+    <aut-input
+      type="text"
+      variant="secondary"
+      name="password"
+      placeholder="Enter password"
+      formControlName="password"
+      class="mb-3"
+    ></aut-input>
+    <aut-button
+      type="submit"
+      variant="primary"
+      [stretch]="true"
+      [disabled]="loginForm.invalid"
+      >Sign In</aut-button
+    >
+    <p class="text-sm font-semibold text-slate mt-6">
+      Don't have an account yet?
+      <a
+        [routerLink]="['/user/sign-up']"
+        class="font-semibold text-cornFlower hover:underline cursor-pointer"
+        >Sign up</a
+      >
+    </p>
+  </form>
+</div>

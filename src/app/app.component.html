@@ -1,0 +1,13 @@
+<div
+  class="flex flex-col min-h-screen"
+  [ngClass]="mode === 'dark' ? 'dark' : 'light'"
+>
+  <app-header
+    class="fixed top-0 z-30"
+    (modeEmmiter)="getValue($event)"
+  ></app-header>
+  <div class="grow bg-ebony">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer class="bg-ebony"></app-footer>
+</div>

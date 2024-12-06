@@ -1,0 +1,24 @@
+<button
+  [ngClass]="buttonClasses"
+  [type]="type"
+  [ngStyle]="buttonStyles"
+  [disabled]="disabled"
+  (click)="$event.stopPropagation(); clickEvent.emit($event)"
+  (focus)="focusEvent.emit($event)"
+  (blur)="blurEvent.emit($event)"
+>
+  <img
+    [src]="iconURL"
+    class="w-4 mr-1 mt-[2px]"
+    alt="image"
+    *ngIf="icon && iconPosition === 'pre' && !iconButton"
+  />
+  <ng-content></ng-content>
+  <img
+    [src]="iconURL"
+    class="w-4 ml-1 mt-[2px]"
+    alt="image"
+    *ngIf="icon && iconPosition === 'post' && !iconButton"
+  />
+  <img [src]="iconURL" class="w-4" alt="image" *ngIf="iconButton" />
+</button>

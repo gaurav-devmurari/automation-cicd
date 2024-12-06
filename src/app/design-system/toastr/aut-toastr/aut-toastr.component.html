@@ -1,0 +1,45 @@
+<div [class]="toastrClassList">
+  <div class="content-center mx-2">
+    <img
+      src="assets/image/check.svg"
+      alt="icon"
+      width="20px"
+      height="20px"
+      *ngIf="type === 'success'"
+    />
+    <img
+      src="assets/image/info.svg"
+      alt="icon"
+      width="20px"
+      height="20px"
+      *ngIf="type === 'info'"
+    />
+    <img
+      src="assets/image/warning.svg"
+      alt="icon"
+      width="20px"
+      height="20px"
+      *ngIf="type === 'warning'"
+    />
+    <img
+      src="assets/image/danger.svg"
+      alt="icon"
+      width="20px"
+      height="20px"
+      *ngIf="type === 'danger'"
+    />
+  </div>
+  <div class="px-1 max-w-[40vw]">
+    <div class="font-semibold">
+      {{ toastrTitle }}
+      <img
+        src="assets/image/x.svg"
+        alt="icon"
+        width="10px"
+        class="float-right mr-1 mt-1 hover:w-3"
+        *ngIf="closeButton"
+      />
+    </div>
+    <div>{{ toastrMessage }}</div>
+  </div>
+</div>

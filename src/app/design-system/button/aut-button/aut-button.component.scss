@@ -1,0 +1,79 @@
+.btn {
+  @apply font-bold rounded-lg py-1 px-3 text-sm hover:shadow-[1px_1px_10px_gray] hover:scale-105;
+
+  &--primary {
+    @apply bg-moroccan text-white;
+  }
+
+  &--secondary {
+    @apply text-moroccan border-moroccan border-2;
+    padding: 2px 10px;
+  }
+
+  &--tertiary {
+    @apply bg-gray-100 text-moroccan;
+  }
+
+  &--danger {
+    @apply bg-oxBlood text-white;
+  }
+  &--success {
+    @apply bg-fir text-base text-white;
+  }
+
+  // ---------------------Disabled Button---------------------
+  &--disabled {
+    @apply pointer-events-none;
+  }
+  &--primary {
+    &--disabled {
+      @apply bg-charcoal;
+    }
+  }
+  &--secondary {
+    &--disabled {
+      @apply border-charcoal text-white;
+    }
+  }
+  &--tertiary {
+    &--disabled {
+      @apply bg-spaceGray text-white;
+    }
+  }
+  &--danger {
+    &--disabled {
+      @apply bg-charcoal;
+    }
+  }
+  &--success {
+    &--disabled {
+      @apply bg-charcoal;
+    }
+  }
+  // ---------------------Button Size---------------------
+  &--sm {
+    @apply text-[12px] py-[1px] px-2;
+  }
+  &--md {
+    @apply text-base font-bold py-1 px-4;
+    img {
+      @apply w-5;
+    }
+  }
+  &--lg {
+    @apply text-lg  py-2 px-4;
+    img {
+      @apply w-6;
+    }
+  }
+  // ---------------------Button Shape---------------------
+  &--square {
+    @apply rounded-none;
+  }
+  &--rounded {
+    @apply rounded-lg;
+  }
+  &--cylinder {
+    @apply rounded-full;
+  }
+}

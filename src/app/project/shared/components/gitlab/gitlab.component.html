@@ -1,0 +1,157 @@
+<div [formGroup]="gitlabForm">
+  <aut-chip
+    placeholder="Enter Stage"
+    [chips]="stages"
+    formControlName="stages"
+    (updateStages)="updateStages($event)"
+  ></aut-chip>
+  <div class="flex justify-between projectMenu">
+    <div>GitLab Rules</div>
+    <div>
+      <aut-button
+        type="button"
+        variant="primary"
+        [icon]="true"
+        [iconPosition]="IconPosition.Pre"
+        iconURL="/assets/image/plus.png"
+        (click)="addRule()"
+        >ADD NEW RULE</aut-button
+      >
+    </div>
+  </div>
+  <div formArrayName="ruless">
+    <div
+      *ngFor="let rule of ruless.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <div class="mt-3 text-white">
+        Rule&nbsp; [&nbsp; {{ i + 1 }} &nbsp;] :
+      </div>
+      <aut-input
+        placeholder="Rule Name"
+        formControlName="rule"
+        (blur)="getRuleName()"
+      >
+      </aut-input>
+      <div class="flex justify-between mt-3">
+        <div class="text-white">Define rule item :</div>
+        <div class="grid grid-cols-2 mr-3 gap-3">
+          <aut-button
+            type="button"
+            variant="primary"
+            [iconButton]="true"
+            iconURL="/assets/image/plus.png"
+            (click)="addDef(rule.get('ruleDefination'))"
+          ></aut-button>
+
+          <aut-button
+            type="button"
+            variant="danger"
+            [iconButton]="true"
+            iconURL="/assets/image/minus.png"
+            (click)="removeDef(rule)"
+          ></aut-button>
+        </div>
+      </div>
+      <div formArrayName="ruleDefination">
+        <div
+          *ngFor="let def of getRuleDefination(rule).controls; let j = index"
+          [formGroupName]="j"
+        >
+          <div class="flex justify-between items-center">
+            <select
+              id="keyword"
+              name="keyword"
+              class="py-2 pl-2 w-2/5 text-base bg-transparent border-0 border-b-2 text-concrete border-charcoal focus:outline-none focus:border-forest mt-2"
+              placeholder="Project Repo"
+              formControlName="keyword"
+            >
+              <option value="" disabled selected class="bg-onyx text-pewter">
+                Project Repo
+              </option>
+              <option
+                *ngFor="let item of projectRepo"
+                class="bg-onyx text-pewter"
+                [value]="item"
+              >
+                {{ item }}
+              </option>
+            </select>
+            <aut-input
+              name="value"
+              id="value"
+              placeholder="Rule Item Value"
+              formControlName="value"
+            ></aut-input>
+            <aut-button
+              type="button"
+              variant="danger"
+              [iconButton]="true"
+              iconURL="/assets/image/minus.png"
+              (click)="removeRuleDef(rule, j)"
+            ></aut-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mt-3">
+    <aut-button type="button" variant="danger" (click)="removeRule()"
+      >DELETE RULE</aut-button
+    >
+  </div>
+  <div class="flex justify-between projectMenu">
+    <div>GitLab Jobs</div>
+    <div>
+      <aut-button
+        type="button"
+        variant="primary"
+        [icon]="true"
+        [iconPosition]="IconPosition.Pre"
+        iconURL="/assets/image/plus.png"
+        (click)="addJob()"
+        >ADD NEW JOB</aut-button
+      >
+    </div>
+  </div>
+  <div formArrayName="jobs">
+    <div *ngFor="let job of jobs.controls; let i = index" [formGroupName]="i">
+      <div class="mt-3 text-white">Job&nbsp; [&nbsp; {{ i + 1 }} &nbsp;] :</div>
+      <aut-input
+        name="job_name"
+        id="job_name"
+        placeholder="Job Name"
+        formControlName="job_name"
+      >
+      </aut-input>
+      <select
+        id="underline_select"
+        class="py-2 pl-2 w-full text-base bg-transparent border-0 border-b-2 text-concrete border-charcoal focus:outline-none focus:border-forest mt-1"
+        formControlName="stage"
+      >
+        <option value="" disabled selected class="bg-onyx text-pewter">
+          Stage
+        </option>
+        <option
+          *ngFor="let item of stages"
+          class="bg-onyx text-pewter"
+          [value]="item"
+        >
+          {{ item }}
+        </option>
+      </select>
+      <aut-chip formControlName="script" placeholder="Enter Script"></aut-chip>
+      <aut-dropdown
+        formControlName="rules"
+        placeholder="Select Rule"
+        [options]="jobRules"
+        (click)="getIndex(i)"
+      ></aut-dropdown>
+    </div>
+    <div class="text-center mt-3">
+      <aut-button type="button" variant="danger" (click)="removeJob(job)"
+        >DELETE JOB</aut-button
+      >
+    </div>
+  </div>
+</div>

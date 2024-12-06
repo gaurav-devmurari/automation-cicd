@@ -1,0 +1,78 @@
+<div class="lD:w-[80vw] mD:w-[90vw] m-auto mt-10 text-center font-semibold text-white">
+  Aut Buttons
+</div>
+<div class="lD:w-[80vw] mD:w-[90vw] m-auto mt-4 mb-3 text-white">
+  <div class="">
+    <span class="ml-5 font-semibold text-white"> Button Variants </span>
+    <div class="p-2 grid lD:grid-cols-5 mD:grid-cols-3 ml-5 lD:gap-11 mD:gap-5">
+      <aut-button variant="primary">Primary Button</aut-button>
+      <aut-button variant="secondary">Secondary Button</aut-button>
+      <aut-button variant="tertiary">Tertiary Button</aut-button>
+      <aut-button variant="danger">Danger Button</aut-button>
+      <aut-button variant="success">Success Button</aut-button>
+    </div>
+  </div>
+  <div class="">
+    <pre
+      >{{ buttonVariant }}
+       </pre
+    >
+  </div>
+  <div class="">
+    <span class="ml-5 font-semibold text-white"> Button Disabled </span>
+    <div class="p-2 grid lD:grid-cols-5 mD:grid-cols-3 ml-5">
+      <aut-button variant="primary" [disabled]="true"
+        >Primary Button</aut-button
+      >
+      <aut-button variant="secondary" [disabled]="true"
+        >Secondary Button</aut-button
+      >
+      <aut-button variant="tertiary" [disabled]="true"
+        >Tertiary Button</aut-button
+      >
+    </div>
+    <div class="">
+      <pre
+        >{{ buttonDisabled }}
+       </pre
+      >
+    </div>
+    <div class="">
+      <span class="ml-5 font-semibold text-white"> Button Size </span>
+      <div
+        class="grid lD:grid-cols-5 mD:grid-cols-2 lD:gap-0 mD:gap-4 p-2 ml-5"
+      >
+        <aut-button variant="primary" size="sm">Small Button</aut-button>
+        <aut-button variant="primary">Regular Button</aut-button>
+        <aut-button variant="primary" size="md">Medium Button</aut-button>
+        <aut-button variant="primary" size="lg">Large Button</aut-button>
+      </div>
+    </div>
+    <div class="">
+      <pre
+        >{{ buttonSize }}
+       </pre
+      >
+    </div>
+    <div class="">
+      <span class="ml-5 font-semibold text-white"> Button Shape </span>
+      <div class="grid lD:grid-cols-5 mD:grid-cols-3 p-2 ml-5">
+        <aut-button variant="primary" shape="square" size="md"
+          >Square Button</aut-button
+        >
+        <aut-button variant="primary" shape="rounded" size="md"
+          >Rounded Button</aut-button
+        >
+        <aut-button variant="primary" shape="cylinder" size="md"
+          >Cylinder Button</aut-button
+        >
+      </div>
+    </div>
+    <div class="">
+      <pre
+        >{{ buttonShape }}
+        </pre
+      >
+    </div>
+  </div>
+</div>

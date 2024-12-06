@@ -1,0 +1,138 @@
+<div
+  class="page h-full lD:w-[90vw] lD:max-w-[1100px] mD:w-[70vw] mD:max-w-[500px] m-auto grid lD:grid-cols-2 mD:grid-cols-1 mt-20"
+>
+  <div class="p-4">
+    <div class="heading">Pipeline Details</div>
+    <form [formGroup]="combinedForm" (ngSubmit)="onSubmit()">
+      <div
+        class="overflow-y-scroll border-charcoal border-2 rounded-l-lg h-[450px] px-8 py-3"
+      >
+        <select
+          id="repoName"
+          name="repoName"
+          class="selectClasses"
+          formControlName="repoName"
+        >
+          <option value="" disabled selected class="bg-onyx text-pewter">
+            Repository Type
+          </option>
+          <option
+            *ngFor="let item of repositories"
+            class="bg-onyx text-pewter"
+            [value]="item.key"
+          >
+            {{ item.lable }}
+          </option>
+        </select>
+        <select
+          id="projectType"
+          name="projectType"
+          class="selectClasses"
+          formControlName="projectType"
+        >
+          <option value="" disabled selected class="bg-onyx text-pewter">
+            Project Type
+          </option>
+          <option
+            *ngFor="let item of projects"
+            class="bg-onyx text-pewter"
+            [value]="item.key"
+          >
+            {{ item.lable }}
+          </option>
+        </select>
+        <div class="mt-3 ml-2">
+          <input
+            type="checkbox"
+            (change)="toggle()"
+            id="check"
+            formControlName="manualEntered"
+          />
+          <label for="check" class="ml-2 text-pewter"
+            >Enter Version Manually</label
+          >
+        </div>
+        <aut-input
+          placeholder="Node Version (ex. 18.0.0)"
+          formControlName="nodeVersion"
+          [hidden]="hide"
+        ></aut-input>
+        <select
+          class="selectClasses"
+          formControlName="nodeVersion"
+          [hidden]="!hide"
+        >
+          <option value="" disabled selected class="bg-onyx text-pewter">
+            Node Version
+          </option>
+          <option
+            *ngFor="let version of versions"
+            class="bg-onyx text-pewter"
+            [value]="version"
+          >
+            {{ version }}
+          </option>
+        </select>
+
+        <ng-template ngIf="repoName">
+          <div [ngSwitch]="repoName">
+            <app-bitbucket
+              #bitBucket
+              *ngSwitchCase="repository.bitbucket"
+              [bitbucketForm]="bitbucketForm"
+              [selectedProject]="selectedProject"
+            ></app-bitbucket>
+            <app-gitlab
+              #gitLab
+              *ngSwitchCase="repository.gitlab"
+              [gitlabForm]="gitlabForm"
+              [selectedProject]="selectedProject"
+            ></app-gitlab>
+            <app-github
+              #gitHub
+              *ngSwitchCase="repository.github"
+              [githubForm]="githubForm"
+              [selectedProject]="selectedProject"
+            ></app-github>
+            <app-azure
+              #azure
+              *ngSwitchCase="repository.azure"
+              [azureForm]="azureForm"
+              [selectedProject]="selectedProject"
+            ></app-azure>
+          </div>
+        </ng-template>
+      </div>
+      <div class="lD:text-right mD:text-center mt-1">
+        <aut-button type="submit" variant="success" shape="cylinder">
+          {{ isYamlUpdated ? 'Update' : 'Submit' }}
+        </aut-button>
+      </div>
+    </form>
+  </div>
+  <div class="p-4">
+    <div class="heading">YAML Code</div>
+    <div class="border-2 border-charcoal rounded-r-lg h-[450px]">
+      <!-- <ngx-monaco-editor
+        *ngIf="isBrowser"
+        [options]="editorOptions_light"
+        [(ngModel)]="code"
+      ></ngx-monaco-editor> -->
+      <ngx-monaco-editor
+        *ngIf="isBrowser"
+        [options]="editorOptions_dark"
+        [(ngModel)]="code"
+      ></ngx-monaco-editor>
+    </div>
+    <div class="lD:text-right mD:text-center mt-1">
+      <aut-button
+        type="button"
+        variant="success"
+        shape="cylinder"
+        [disabled]=""
+        (click)="updateYAML()"
+        >Update</aut-button
+      >
+    </div>
+  </div>
+</div>

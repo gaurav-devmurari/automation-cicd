@@ -1,0 +1,81 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<header class="w-screen navbar navbar-expand-md text-[17px]">
+  <nav class="navbar navbar-dark navbar-fixed-top">
+    <div class="grid mD:grid-cols-[20vw_60%_auto] items-center px-10 h-12">
+      <div class="logo"></div>
+      <div class="">
+        <ul class="flex justify-start">
+          <li class="ml-10">
+            <aut-link [routerLink]="['']" variant="secondary">Home</aut-link>
+          </li>
+          <li *ngIf="token" [(ngModel)]="token" class="ml-10">
+            <aut-link [routerLink]="['/pipeline/list']" variant="secondary"
+              >Pipelines</aut-link
+            >
+          </li>
+          <li class="ml-10">
+            <aut-link [routerLink]="['/pipeline/create']" variant="secondary"
+              >Create Pipelines</aut-link
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="flex justify-end pr-5 text-white">
+        <button (click)="toggleMenu()">
+          <i class="fa-solid fa-user fa-xl"></i>
+        </button>
+        <div
+          class="profileMenu border absolute bg-white rounded-lg top-full w-[200px] text-center"
+          *ngIf="profileMenu"
+        >
+          <div
+            class="m-2 rounded-lg bg-ebony hover:scale-105 flex justify-evenly"
+            *ngIf="!token"
+            (click)="toggleMenu()"
+          >
+            <i class="fa-solid fa-arrow-right-to-bracket content-center"></i>
+            <a routerLink="/user/sign-in" class="w-24 text-left">
+              Sign In
+            </a>
+          </div>
+          <div
+            class="m-2 rounded-lg bg-ebony hover:scale-105 flex justify-evenly"
+            *ngIf="!token"
+            (click)="toggleMenu()"
+          >
+            <i class="fa-solid fa-user-plus content-center"></i>
+            <a routerLink="/user/sign-up" class="w-24 text-left">
+              Sign Up
+            </a>
+          </div>
+          <div
+            class="m-2 rounded-lg bg-ebony hover:scale-105 hover:cursor-pointer flex justify-evenly"
+            *ngIf="token"
+            (click)="signOut()"
+          >
+            Sign Out
+          </div>
+          <div
+            class="m-2 rounded-lg bg-ebony hover:scale-105 hover:cursor-pointer flex justify-evenly"
+            (click)="toggleTheme()"
+          >
+            <div>
+              <i
+                class="fa-regular fa-sun content-center"
+                *ngIf="!themeIcon"
+              ></i>
+              <i
+                class="fa-regular fa-moon content-center"
+                *ngIf="themeIcon"
+              ></i>
+            </div>
+            <div class="w-24 text-left">
+              {{ theme }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

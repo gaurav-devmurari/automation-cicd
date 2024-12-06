@@ -1,0 +1,45 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<div [ngSwitch]="variant">
+  <ng-container *ngSwitchCase="'primary'">
+    <input
+      [name]="name"
+      [id]="id"
+      [type]="type"      
+      [(ngModel)]="value"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [ngClass]="inputClasses"
+      autocomplete="off"
+      (input)="onInput()"
+      (blur)="onBlurEvent()"
+      (keydown)="onKeyDown($event)"
+    />
+  </ng-container>
+  <ng-container *ngSwitchCase="'secondary'">
+    <div class="relative z-0 w-full mb-5 group">
+      <input
+        [type]="type"
+        [name]="name"
+        [id]="id"
+        [(ngModel)]="value"
+        #secondaryInput
+        placeholder=" "
+        [disabled]="disabled"
+        [ngClass]="inputClasses"
+        autocomplete="off"
+        class="peer"
+        (input)="onInput()"
+        (blur)="onBlurEvent()"
+        (keydown)="onKeyDown($event)"
+      />
+      <label
+        [for]="id"
+        (click)="secondaryInput.focus()"
+        [ngClass]="labelClasses"
+      >
+        {{ placeholder }}
+      </label>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,21 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<div>
+  <input
+    type="text"
+    [(ngModel)]="value"
+    [ngClass]="selectClasses"
+    [placeholder]="placeholder"
+    readonly
+    (click)="openDropdown()"
+  />
+  <div *ngIf="isOpen" class="bg-onyx text-pewter relative">
+    <div
+      class="p-2 cursor-pointer hover:bg-charcoal"
+      *ngFor="let option of options"
+      (click)="selectOption(option)"
+    >
+      {{ option }}
+    </div>
+  </div>
+</div>

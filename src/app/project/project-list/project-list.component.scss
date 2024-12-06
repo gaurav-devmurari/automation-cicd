@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: gray;
+}
+
+.heading {
+  @apply border-onyx border-2 bg-charcoal rounded-lg;
+}

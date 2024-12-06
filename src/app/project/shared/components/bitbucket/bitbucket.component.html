@@ -1,0 +1,182 @@
+<div [formGroup]="bitbucketForm">
+  <div class="ml-3 mt-3 text-white">Select Action :</div>
+  <div>
+    <input
+      type="checkbox"
+      class="ml-3 mt-3"
+      (change)="branch = !branch"
+      [checked]="branch"
+      id="branch"
+    />
+    <label for="branch" class="mr-4 text-white"> Branches </label>
+    <input type="checkbox" (change)="tag = !tag" [checked]="tag" id="tag" />
+    <label for="tag" class="mr-4 text-white"> Tags </label>
+  </div>
+  <div [hidden]="!branch">
+    <div class="flex justify-between projectMenu">
+      <div>Enter Branch Info</div>
+      <div>
+        <aut-button
+          type="button"
+          variant="primary"
+          [icon]="true"
+          [iconPosition]="IconPosition.Pre"
+          iconURL="/assets/image/plus.png"
+          (click)="addBranch()"
+          >ADD BRANCH</aut-button
+        >
+      </div>
+    </div>
+    <div formArrayName="branches">
+      <div
+        *ngFor="let branch of branches.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <div class="mt-3 text-white">
+          Branch&nbsp; [&nbsp; {{ i + 1 }} &nbsp;] :
+        </div>
+        <aut-input
+          name="name"
+          id="name"
+          formControlName="name"
+          placeholder="Branch Name"
+        >
+        </aut-input>
+        <div class="flex justify-between mt-3">
+          <div class="text-white">Steps :</div>
+          <div class="grid grid-cols-2 mr-3 gap-3">
+            <aut-button
+              type="button"
+              variant="primary"
+              [iconButton]="true"
+              iconURL="/assets/image/plus.png"
+              (click)="addStep(branch.get('steps'))"
+            ></aut-button>
+            <aut-button
+              type="button"
+              variant="danger"
+              [iconButton]="true"
+              iconURL="/assets/image/minus.png"
+              (click)="removeAllSteps(branch)"
+            ></aut-button>
+          </div>
+        </div>
+        <div formArrayName="steps">
+          <div
+            *ngFor="let step of branch.get('steps')['controls']; let j = index"
+            [formGroupName]="j"
+          >
+            <div class="grid grid-cols-[40%_45%_5%] gap-4">
+              <aut-input
+                name="stepName"
+                id="stepName"
+                placeholder="Step Name"
+                formControlName="name"
+              >
+              </aut-input>
+              <aut-chip
+                formControlName="actions"
+                placeholder="Action"
+              ></aut-chip>
+              <aut-button
+                type="button"
+                variant="danger"
+                [iconButton]="true"
+                iconURL="/assets/image/minus.png"
+                (click)="removeStep(branch, j)"
+                class="mt-2"
+              ></aut-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-3">
+      <aut-button type="button" variant="danger" (click)="removeBranch()"
+        >DELETE BRANCH</aut-button
+      >
+    </div>
+  </div>
+  <div [hidden]="!tag">
+    <div class="flex justify-between projectMenu">
+      <div>Enter Tag Info</div>
+      <div>
+        <aut-button
+          type="button"
+          variant="primary"
+          [icon]="true"
+          [iconPosition]="IconPosition.Pre"
+          iconURL="/assets/image/plus.png"
+          (click)="addTag()"
+          >ADD TAG</aut-button
+        >
+      </div>
+    </div>
+    <div formArrayName="tags">
+      <div *ngFor="let tag of tags.controls; let i = index" [formGroupName]="i">
+        <div class="mt-3 text-white">
+          Tag&nbsp; [&nbsp; {{ i + 1 }} &nbsp;] :
+        </div>
+        <aut-input
+          name="projectVersion"
+          id="projectVersion"
+          placeholder="Tag Name"
+          formControlName="name"
+        >
+        </aut-input>
+        <div class="flex justify-between mt-3">
+          <div class="text-white">Steps :</div>
+          <div class="grid grid-cols-2 mr-3 gap-3">
+            <aut-button
+              type="button"
+              variant="primary"
+              [iconButton]="true"
+              iconURL="/assets/image/plus.png"
+              (click)="addStep(tag.get('steps'))"
+            ></aut-button>
+            <aut-button
+              type="button"
+              variant="danger"
+              [iconButton]="true"
+              iconURL="/assets/image/minus.png"
+              (click)="removeAllSteps(tag)"
+            ></aut-button>
+          </div>
+        </div>
+        <div formArrayName="steps">
+          <div
+            *ngFor="let step of tag.get('steps')['controls']; let j = index"
+            [formGroupName]="j"
+          >
+            <div class="grid grid-cols-[40%_45%_5%] gap-4">
+              <aut-input
+                name="projectVersion"
+                id="projectVersion"
+                placeholder="Step Name"
+                formControlName="name"
+              >
+              </aut-input>
+              <aut-chip
+                formControlName="actions"
+                placeholder="Action"
+              ></aut-chip>
+              <aut-button
+                type="button"
+                variant="danger"
+                [iconButton]="true"
+                iconURL="/assets/image/minus.png"
+                (click)="removeStep(tag, j)"
+                class="mt-2"
+              ></aut-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-3">
+      <aut-button type="button" variant="danger" (click)="removeTag()"
+        >DELETE TAG</aut-button
+      >
+    </div>
+  </div>
+</div>

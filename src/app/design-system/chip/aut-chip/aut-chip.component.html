@@ -1,0 +1,22 @@
+<input
+  type="text"
+  [(ngModel)]="value"
+  [placeholder]="placeholder"
+  [disabled]="disabled"
+  [ngClass]="inputClasses"
+  autocomplete="off"
+  (keydown)="onKeyDown($event)"
+  (blur)="onTouched()"
+/>
+<div class="max-h-36 overflow-auto">
+  <div *ngFor="let chip of chips; let i = index" class="chips">
+    {{ chip }}
+    <aut-button
+      variant="tertiary"
+      class="close-btn"
+      type="button"
+      (click)="removeChip(i)"
+      >X</aut-button
+    >
+  </div>
+</div>

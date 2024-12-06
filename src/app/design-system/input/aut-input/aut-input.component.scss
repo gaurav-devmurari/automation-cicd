@@ -1,0 +1,13 @@
+.input {
+  &--primary {
+    @apply py-2 pl-3 w-full text-base bg-transparent border-0 border-b-2 text-concrete border-charcoal focus:outline-none focus:border-forest mt-1;
+  }
+  &--secondary {
+    @apply block bg-transparent text-base text-white tracking-wider font-semibold border-0 border-b border-concrete py-2 w-full focus:outline-none;
+  } 
+}
+
+.label {
+  @apply peer-focus:font-medium absolute text-base text-slate duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-placeholder-shown:translate-y-0;
+}
+

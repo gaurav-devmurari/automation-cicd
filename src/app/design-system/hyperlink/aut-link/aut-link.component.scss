@@ -1,0 +1,24 @@
+.link {
+  @apply no-underline font-semibold cursor-pointer;
+
+  &--primary {
+    &:hover {
+      @apply underline;
+    }
+  }
+  &--secondary {
+    @apply py-1 text-pewter;
+    &:hover {
+      @apply border-y-2 border-white;
+    }
+    &:active {
+      @apply border-red-600;
+    }
+  }
+  &--tertiary {
+    @apply text-white rounded-md p-1 border-white border-[1px];
+    &:hover {
+      @apply bg-charcoal text-white;
+    }
+  }
+}

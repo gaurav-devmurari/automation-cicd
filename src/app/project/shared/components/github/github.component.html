@@ -1,0 +1,200 @@
+<div [formGroup]="githubForm">
+  <div class="projectMenu">GitHub Form</div>
+  <aut-input
+    name="githubName"
+    id="githubName"
+    placeholder="GitHub Name"
+    formControlName="githubName"
+  >
+  </aut-input>
+  <aut-chip
+    [chips]="branches"
+    placeholder="Define Branches"
+    formControlName="branchDef"
+  ></aut-chip>
+  <div class="ml-3 mt-3 text-white">Select Action :</div>
+  <div class="text-white">
+    <input
+      type="checkbox"
+      class="ml-3 mt-3"
+      id="push"
+      (change)="push = !push"
+      [checked]="!push"
+    />
+    <label for="push" class="mr-4"> Push </label>
+    <input
+      type="checkbox"
+      id="pull"
+      (change)="pull = !pull"
+      [checked]="!pull"
+    />
+    <label for="pull" class="mr-4"> Pull </label>
+    <input
+      type="checkbox"
+      id="pullRequest"
+      (change)="pullRequest = !pullRequest"
+      [checked]="!pullRequest"
+    />
+    <label for="pullRequest"> Pull Request </label>
+  </div>
+  <div>
+    <div [hidden]="push">
+      <div class="ml-3 mt-2">Branches For Push :</div>
+      <aut-dropdown
+        formControlName="push"
+        to="push"
+        placeholder="Select Rule"
+        [options]="branches"
+        (emmiter)="dataEmmiter($event)"
+      ></aut-dropdown>
+    </div>
+    <div [hidden]="pull">
+      <div class="ml-3 mt-2">Branches For Pull:</div>
+      <aut-dropdown
+        to="pull"
+        formControlName="pull"
+        placeholder="Select Rule"
+        [options]="branches"
+        (emmiter)="dataEmmiter($event)"
+      ></aut-dropdown>
+    </div>
+    <div [hidden]="pullRequest">
+      <div class="ml-3 mt-2">Branches For Pull Request :</div>
+      <aut-dropdown
+        to="pull_request"
+        formControlName="pullRequest"
+        placeholder="Select Rule"
+        [options]="branches"
+        (emmiter)="dataEmmiter($event)"
+      ></aut-dropdown>
+    </div>
+  </div>
+  <div class="flex justify-between projectMenu">
+    <div>GitHub Jobs</div>
+    <div class="flex">
+      <aut-button
+        type="button"
+        variant="primary"
+        [icon]="true"
+        [iconPosition]="IconPosition.Pre"
+        iconURL="/assets/image/plus.png"
+        (click)="addjob()"
+        >ADD NEW JOB</aut-button
+      >
+    </div>
+  </div>
+  <div formArrayName="githubJobs">
+    <div
+      *ngFor="let job of githubJobs.controls; let i = index"
+      [formGroupName]="i"
+      class="text-white"
+    >
+      <div class="mt-3">Job&nbsp; [&nbsp; {{ i + 1 }} &nbsp;] :</div>
+      <aut-input
+        name="jobName"
+        id="jobName"
+        placeholder="Job Name"
+        formControlName="jobName"
+      >
+      </aut-input>
+      <aut-input
+        name="runsOn"
+        id="runsOn"
+        placeholder="Runs On"
+        formControlName="runsOn"
+      >
+      </aut-input>
+      <div class="ml-3 mt-3">
+        Check if job require some needs :
+        <input
+          type="checkbox"
+          class="ml-2"
+          (change)="needs = !needs"
+          id="need"
+        />
+        <label for="need"> Needs </label>
+      </div>
+      <aut-input
+        name="needs"
+        id="needs"
+        [hidden]="needs"
+        placeholder="Needs"
+        formControlName="needs"
+      >
+      </aut-input>
+      <div class="flex justify-between mt-3">
+        <div class="ml-3">Define Steps :</div>
+        <div class="grid grid-cols-2 mr-3 gap-3">
+          <aut-button
+            type="button"
+            variant="primary"
+            [iconButton]="true"
+            iconURL="/assets/image/plus.png"
+            (click)="addSteps(job.get('steps'))"
+          ></aut-button>
+
+          <aut-button
+            type="button"
+            variant="danger"
+            [iconButton]="true"
+            iconURL="/assets/image/minus.png"
+            (click)="removeSteps(job.get('steps'))"
+          ></aut-button>
+        </div>
+      </div>
+      <div formArrayName="steps">
+        <div
+          *ngFor="let step of job.get('steps')['controls']; let j = index"
+          [formGroupName]="j"
+        >
+          <aut-input
+            name="name"
+            id="name"
+            placeholder="Step Name"
+            formControlName="name"
+          >
+          </aut-input>
+          <div class="grid grid-cols-[30%_50%_10%] mt-2 gap-4">
+            <select
+              id="underline_select"
+              formControlName="useOrRun"
+              class="py-2 pl-2 w-full text-base bg-transparent border-0 border-b-2 text-concrete border-charcoal focus:outline-none focus:border-forest mt-1"
+            >
+              <option value="" disabled selected class="bg-onyx text-pewter">
+                Use | Run
+              </option>
+              <option
+                *ngFor="let item of useOrRun"
+                class="bg-onyx text-pewter"
+                [value]="item"
+              >
+                {{ item }}
+              </option>
+            </select>
+            <aut-input
+              name="stepValue"
+              id="stepValue"
+              placeholder="Step Value"
+              formControlName="stepValue"
+            >
+            </aut-input>
+            <div class="text-center mt-4">
+              <aut-button
+                type="button"
+                variant="danger"
+                [iconButton]="true"
+                iconURL="/assets/image/minus.png"
+                (click)="removeStepAtPosition(job.get('steps'), j)"
+              ></aut-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mt-3">
+    <aut-button type="button" variant="danger" (click)="removeJob()"
+      >DELETE JOB</aut-button
+    >
+  </div>
+</div>

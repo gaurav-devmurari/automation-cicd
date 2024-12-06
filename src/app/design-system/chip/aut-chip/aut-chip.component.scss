@@ -1,0 +1,14 @@
+.input {
+  @apply py-2 pl-3 text-base bg-transparent border-0 border-b-2 text-concrete border-charcoal focus:outline-none focus:border-forest mt-1 w-full;
+}
+
+.chips {
+  @apply inline-flex m-1 p-1 bg-gray-300 rounded-lg text-base;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  margin-left: 8px;
+  cursor: pointer;
+}
