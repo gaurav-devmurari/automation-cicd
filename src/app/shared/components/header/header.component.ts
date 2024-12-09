@@ -1,3 +1,4 @@
+import { UserLoginService } from './../../../user-login/service/user-login.service';
 import {
   Component,
   ElementRef,
@@ -30,11 +31,13 @@ export class HeaderComponent implements OnInit {
   constructor(
     private renderer: Renderer2,
     private route: Router,
+    private userLoginService: UserLoginService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {}
+
+  isHidden = true;
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      // This code will only run on the client side
       this.token = localStorage?.getItem('token');
       const nav = document.querySelector('.navbar-fixed-top') as HTMLElement;
       if (nav) {
@@ -44,12 +47,16 @@ export class HeaderComponent implements OnInit {
         });
       }
     }
+    this.userLoginService.token$.subscribe((token) => {
+      this.isHidden = !token;
+    });
   }
 
   signOut() {
     localStorage.clear();
-    this.toggleMenu()
+    this.toggleMenu();
     this.route.navigate(['']);
+    this.isHidden = true;
   }
   themeIcon = true;
   toggleTheme() {
@@ -57,7 +64,7 @@ export class HeaderComponent implements OnInit {
     this.mode = this.themeCheck == true ? 'dark' : 'light';
     this.modeEmmiter.emit(this.mode);
     this.themeCheck = !this.themeCheck;
-    this.toggleMenu()
+    this.toggleMenu();
     this.themeIcon = !this.themeIcon;
   }
   profileMenu = false;

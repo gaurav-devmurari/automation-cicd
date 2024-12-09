@@ -33,6 +33,6 @@ const routes: Routes = [
     FormsModule,
     DesignSystemModule,
   ],
-  providers: [UserLoginService, UserRegistrationService],
+  providers: [UserRegistrationService],
 })
 export class UserLoginModule {}

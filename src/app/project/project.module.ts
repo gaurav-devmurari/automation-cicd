@@ -34,6 +34,7 @@ const routes: Routes = [
       {
         path: 'edit/:projectId',
         component: CreateProjectComponent,
+        canActivate: [Guard]
       },
     ],
   },
