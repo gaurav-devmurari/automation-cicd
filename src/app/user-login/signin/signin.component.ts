@@ -25,11 +25,6 @@ export class SigninComponent {
 
   login() {
     const model = this.loginForm.value as UserLogin;
-    this.userLoginService.login(model).subscribe((data) => {
-      localStorage.setItem('token', data.access_token);
-      if (data.access_token != null || undefined) {
-        this.route.navigate(['/pipeline/list']);
-      }
-    });
+    this.userLoginService.login(model);
   }
 }

@@ -9,7 +9,7 @@
           <li class="ml-10">
             <aut-link [routerLink]="['']" variant="secondary">Home</aut-link>
           </li>
-          <li *ngIf="token" [(ngModel)]="token" class="ml-10">
+          <li [hidden]="isHidden" class="ml-10">
             <aut-link [routerLink]="['/pipeline/list']" variant="secondary"
               >Pipelines</aut-link
             >
@@ -35,9 +35,7 @@
             (click)="toggleMenu()"
           >
             <i class="fa-solid fa-arrow-right-to-bracket content-center"></i>
-            <a routerLink="/user/sign-in" class="w-24 text-left">
-              Sign In
-            </a>
+            <a routerLink="/user/sign-in" class="w-24 text-left"> Sign In </a>
           </div>
           <div
             class="m-2 rounded-lg bg-ebony hover:scale-105 flex justify-evenly"
@@ -45,9 +43,7 @@
             (click)="toggleMenu()"
           >
             <i class="fa-solid fa-user-plus content-center"></i>
-            <a routerLink="/user/sign-up" class="w-24 text-left">
-              Sign Up
-            </a>
+            <a routerLink="/user/sign-up" class="w-24 text-left"> Sign Up </a>
           </div>
           <div
             class="m-2 rounded-lg bg-ebony hover:scale-105 hover:cursor-pointer flex justify-evenly"
