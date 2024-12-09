@@ -22,7 +22,9 @@ export class UserLoginService {
 
   login(user: UserLogin) {
     this.httpClient
-      .post<UserLoginResponse>(`${this._baseUrl}auth/log-in`, user)
+      .post<UserLoginResponse>(`${this._baseUrl}auth/log-in`, user, {
+        withCredentials: true,
+      })
       .subscribe((data) => {
         if (data.access_token) {
           this.tokenSubject.next(true);
