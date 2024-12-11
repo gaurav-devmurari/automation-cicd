@@ -1,5 +1,6 @@
 .toarst {
-  animation: fadeInAnimation ease 1s;
+  animation: fadeInAnimation;
+  animation-duration: 10ms;
   animation-iteration-count: infinite;
 }
 
@@ -49,7 +50,7 @@
     animation-iteration-count: infinite;
   }
   &--once {
-    animation: fadeInAnimation ease 3s;
+    animation: fadeInAnimation ease 1s;
     animation-iteration-count: 1;
   }
   // ---------------------------position

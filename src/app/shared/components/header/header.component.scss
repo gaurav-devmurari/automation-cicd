@@ -7,11 +7,6 @@
 
 .navbar-fixed-top.scrolled {
   backdrop-filter: blur(50px);
-  @apply py-1;  
-  background-color: var(--ebony) !important;
-  transition: background-color 100ms linear;
-}
-
-.navbar-fixed-top.scrolled .nav-link {
-  color: #555;
+  // @apply py-1 bg-black;
+  transition: background-color 100ms ease-in-out;
 }

@@ -1,11 +1,11 @@
 <div
-  class="page h-full lD:w-[90vw] lD:max-w-[1100px] mD:w-[70vw] mD:max-w-[500px] m-auto grid lD:grid-cols-2 mD:grid-cols-1 mt-20"
+  class="lD:w-[90vw] lD:max-w-[1100px] mD:w-[70vw] mD:max-w-[500px] m-auto grid lD:grid-cols-2 mD:grid-cols-1 mt-10"
 >
   <div class="p-4">
     <div class="heading">Pipeline Details</div>
     <form [formGroup]="combinedForm" (ngSubmit)="onSubmit()">
       <div
-        class="overflow-y-scroll border-charcoal border-2 rounded-l-lg h-[450px] px-8 py-3"
+        class="overflow-y-scroll border-2 rounded-lg h-[450px] px-8 py-3 backdrop-blur-md"
       >
         <select
           id="repoName"
@@ -73,7 +73,6 @@
             {{ version }}
           </option>
         </select>
-
         <ng-template ngIf="repoName">
           <div [ngSwitch]="repoName">
             <app-bitbucket
@@ -112,12 +111,7 @@
   </div>
   <div class="p-4">
     <div class="heading">YAML Code</div>
-    <div class="border-2 border-charcoal rounded-r-lg h-[450px]">
-      <!-- <ngx-monaco-editor
-        *ngIf="isBrowser"
-        [options]="editorOptions_light"
-        [(ngModel)]="code"
-      ></ngx-monaco-editor> -->
+    <div class="h-[450px]">
       <ngx-monaco-editor
         *ngIf="isBrowser"
         [options]="editorOptions_dark"

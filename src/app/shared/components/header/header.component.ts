@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.token = localStorage?.getItem('token');
+      this.isHidden = !this.token;
       const nav = document.querySelector('.navbar-fixed-top') as HTMLElement;
       if (nav) {
         document.addEventListener('scroll', () => {

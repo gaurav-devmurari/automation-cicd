@@ -10,7 +10,6 @@ import { UserRegistrationDetails } from '../models/user-registration.model';
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
-  selectedImage: File;
   constructor(
     private formBuilder: FormBuilder,
     private userRegistrationService: UserRegistrationService
@@ -24,29 +23,13 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  onFileSelect(event: Event) {
-    const image = event.target as HTMLInputElement;
-    if (image.files) {
-      this.selectedImage = image.files[0];
-    }
-  }
-
-  signUp() {
+  async signUp() {
     const formData = new FormData();
     formData.append('name', this.signupForm.get('name')?.value);
     formData.append('email', this.signupForm.get('email')?.value);
     formData.append('password', this.signupForm.get('password')?.value);
-    formData.append('image', this.selectedImage);
-    if (!this.selectedImage) {
-      alert('image requiered');
-      return;
-    }
-
     const userDetails = formData as unknown as UserRegistrationDetails;
-    this.userRegistrationService
-      .userRegistration(userDetails)
-      .subscribe((result) => {
-        console.log(result);
-      });
+    const isSuccess =
+      await this.userRegistrationService.userRegistration(userDetails);
   }
 }

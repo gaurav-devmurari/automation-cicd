@@ -2,7 +2,7 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <header class="w-screen navbar navbar-expand-md text-[17px]">
   <nav class="navbar navbar-dark navbar-fixed-top">
-    <div class="grid mD:grid-cols-[20vw_60%_auto] items-center px-10 h-12">
+    <div class="grid grid-cols-[20vw_auto_auto] items-center px-10 h-12">
       <div class="logo"></div>
       <div class="">
         <ul class="flex justify-start">
@@ -14,61 +14,50 @@
               >Pipelines</aut-link
             >
           </li>
-          <li class="ml-10">
+          <li [hidden]="isHidden" class="ml-10">
             <aut-link [routerLink]="['/pipeline/create']" variant="secondary"
               >Create Pipelines</aut-link
             >
           </li>
         </ul>
       </div>
-      <div class="flex justify-end pr-5 text-white">
-        <button (click)="toggleMenu()">
-          <i class="fa-solid fa-user fa-xl"></i>
-        </button>
+      <div class="flex justify-end text-white">
         <div
-          class="profileMenu border absolute bg-white rounded-lg top-full w-[200px] text-center"
-          *ngIf="profileMenu"
+          class="mr-5 rounded-lg bg-ebony hover:scale-105 px-2 py-1"
+          *ngIf="isHidden"
         >
-          <div
-            class="m-2 rounded-lg bg-ebony hover:scale-105 flex justify-evenly"
-            *ngIf="!token"
-            (click)="toggleMenu()"
+          <i class="fa-solid fa-arrow-right-to-bracket content-center"></i>
+          <a routerLink="/user/sign-in" class="ml-1"> Sign In </a>
+        </div>
+
+        <div
+          class="mr-5 rounded-lg bg-ebony hover:scale-105 px-2 py-1"
+          *ngIf="isHidden"
+        >
+          <i class="fa-solid fa-user-plus content-center"></i>
+          <a routerLink="/user/sign-up" class="text-left ml-1"> Sign Up </a>
+        </div>
+        <div
+          class="mr-5 rounded-lg bg-ebony hover:scale-105 px-2 py-1 hover:cursor-pointer"
+          (click)="signOut()"
+          *ngIf="!isHidden"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span class="lD:inline-block mD:hidden ml-1" title="Sign Out">
+            Sign Out</span
           >
-            <i class="fa-solid fa-arrow-right-to-bracket content-center"></i>
-            <a routerLink="/user/sign-in" class="w-24 text-left"> Sign In </a>
+        </div>
+
+        <div
+          class="mr-5 rounded-lg bg-ebony hover:scale-105 px-2 py-1 flex hover:cursor-pointer"
+          (click)="toggleTheme()"
+        >
+          <div>
+            <i class="fa-regular fa-sun content-center" *ngIf="!themeIcon"></i>
+            <i class="fa-regular fa-moon content-center" *ngIf="themeIcon"></i>
           </div>
-          <div
-            class="m-2 rounded-lg bg-ebony hover:scale-105 flex justify-evenly"
-            *ngIf="!token"
-            (click)="toggleMenu()"
-          >
-            <i class="fa-solid fa-user-plus content-center"></i>
-            <a routerLink="/user/sign-up" class="w-24 text-left"> Sign Up </a>
-          </div>
-          <div
-            class="m-2 rounded-lg bg-ebony hover:scale-105 hover:cursor-pointer flex justify-evenly"
-            *ngIf="token"
-            (click)="signOut()"
-          >
-            Sign Out
-          </div>
-          <div
-            class="m-2 rounded-lg bg-ebony hover:scale-105 hover:cursor-pointer flex justify-evenly"
-            (click)="toggleTheme()"
-          >
-            <div>
-              <i
-                class="fa-regular fa-sun content-center"
-                *ngIf="!themeIcon"
-              ></i>
-              <i
-                class="fa-regular fa-moon content-center"
-                *ngIf="themeIcon"
-              ></i>
-            </div>
-            <div class="w-24 text-left">
-              {{ theme }}
-            </div>
+          <div class="text-left ml-1 lD:block mD:hidden" title="Switch theme">
+            {{ theme }}
           </div>
         </div>
       </div>

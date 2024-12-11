@@ -48,8 +48,8 @@ export class CreateProjectComponent implements OnInit {
   projectId = '';
   projectList: ProjectList[];
   selectedProject: ProjectList;
-  //---------------------------------------Create Project Form
   stages: string[] = [];
+
   azureForm: FormGroup = this.fb.group({
     trigger: [''],
     azure_stages: this.fb.array([]),
@@ -87,21 +87,6 @@ export class CreateProjectComponent implements OnInit {
     githubForm: this.githubForm,
     azureForm: this.azureForm,
   });
-
-  //---------------------------------------ngx-monaco-ediotor configuration
-  editorOptions_light = {
-    theme: 'vs',
-    language: 'yaml',
-    fontSize: 19,
-    selectOnLineNumbers: true,
-    renderLineHighlight: 'none',
-    scrollBeyondLastLine: false,
-    wordWrap: 'on',
-    scrollbar: {
-      alwaysConsumeMouseWheel: false,
-    },
-    automaticLayout: true,
-  };
   editorOptions_dark = {
     theme: 'vs-dark',
     language: 'yaml',
@@ -170,22 +155,26 @@ export class CreateProjectComponent implements OnInit {
     let selectedActions: object[] = [];
 
     switch (selectedFormType) {
-      case Repository.bitbucket:
-        { const bitBucketFormValue = this.bitBucket.checkValue();
+      case Repository.bitbucket: {
+        const bitBucketFormValue = this.bitBucket.checkValue();
         selectedActions = bitBucketFormValue;
-        break; }
-      case Repository.gitlab:
-        { const gitLabFormValue = this.gitLab.checkValue();
+        break;
+      }
+      case Repository.gitlab: {
+        const gitLabFormValue = this.gitLab.checkValue();
         selectedActions.push(gitLabFormValue);
-        break; }
-      case Repository.github:
-        { const gitHubFormValue = this.gitHub.checkValue();
+        break;
+      }
+      case Repository.github: {
+        const gitHubFormValue = this.gitHub.checkValue();
         selectedActions.push(gitHubFormValue);
-        break; }
-      case Repository.azure:
-        { const azureFormValue = this.azure.checkValue();
+        break;
+      }
+      case Repository.azure: {
+        const azureFormValue = this.azure.checkValue();
         selectedActions.push(azureFormValue);
-        break; }
+        break;
+      }
     }
     const formDataToSubmit: ProjectDetails = {
       repoName: this.repoName,
@@ -208,7 +197,7 @@ export class CreateProjectComponent implements OnInit {
 
   projectDetails(projectId: number) {
     this.projectId = projectId.toString();
-    this.YamlService.getYamlFile(this.projectId);    
+    this.YamlService.getYamlFile(this.projectId);
     this.projectListService.getProjectDetail(projectId).subscribe({
       next: (res) => {
         this.selectedProject = res as unknown as ProjectList;
@@ -238,6 +227,6 @@ export class CreateProjectComponent implements OnInit {
       new Blob([this.code], { type: 'text/yaml' }),
       'ymlFile.yml'
     );
-    this.createProjectService.updateYamlEditorData(formData, this.projectId)
+    this.createProjectService.updateYamlEditorData(formData, this.projectId);
   }
 }

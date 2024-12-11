@@ -1,14 +1,11 @@
-<div class="h-full lD:w-[80vw] mD:w-[90vw] m-auto text-white flex">
+<div class="min-h-screen lD:w-[80vw] mD:w-[90vw] m-auto text-white flex">
   <div class="w-full mt-20">
     <div
-      class="overflow-auto p-10 border-charcoal rounded-lg lD:h-[450px] mD:h-[75vh] grid lD:grid-cols-3 mD:grid-cols-2 gap-10"
+      class="overflow-auto p-10 border-charcoal rounded-lg lD:min-h-screen mD:h-[75vh] grid lD:grid-cols-3 mD:grid-cols-2 gap-10"
     >
-    <div *ngFor="let project of projectList; let index = index">
-      <aut-card
-        [index]="index"
-        [project]="project"
-      ></aut-card>
-    </div>
+      <div *ngFor="let project of projectList; let index = index">
+        <aut-card [index]="index" [project]="project"></aut-card>
+      </div>
     </div>
   </div>
 </div>

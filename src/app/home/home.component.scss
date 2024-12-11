@@ -1,32 +1,10 @@
-.mainWrapper{
-  // @apply bg-[url('/assets/image/dark-bg.png')]; // for dark mode
-  @apply bg-[url('/assets/image/bglightremove.png')];
- }
-.mainWrapper1{
-  // @apply bg-[url('/assets/image/dark-bg-copy.png')];
-  @apply bg-[url('/assets/image/14Photoroom.png')];
-}
-.mainWrapper2{
-  // @apply bg-[url('/assets/image/dark-bg-copy.png')];
-  @apply bg-[url('/assets/image/wrapper.png')];
-}
-
-
-
-// .header-image {
-//   background-image: url('/assets/image/banner-light.png');
-//   background-repeat: no-repeat;
-//   background-size: contain;
-//   background-position-x: center;
-// }
-
 .card1-image {
   background-image: url('/assets/image/yaml.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position-x: center;
   background-position-y: center;
-  border-radius: 10px; 
+  border-radius: 10px;
 }
 .card2-image {
   background-image: url('/assets/image/15.png');
@@ -36,8 +14,3 @@
   background-position-y: center;
   border-radius: 10px;
 }
-
-// .bgimages {
-//   background-image: url('/assets/image/bglight.png');
-//   background-color: #f0f8ff;
-// }

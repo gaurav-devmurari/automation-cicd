@@ -1,6 +1,5 @@
-<div class="logo mt-20 w-56 m-auto"></div>
 <div
-  class="bg-onyx w-[450px] border-solid border-charcoal border-2 p-7 rounded-lg m-auto mb-10"
+  class="mt-32 w-[400px] backdrop-blur-sm p-7 rounded-lg m-auto mb-10 shadow-[0px_0px_20px_0px_black]"
 >
   <form class="max-w-md mx-auto" [formGroup]="signupForm" (ngSubmit)="signUp()">
     <h1
@@ -34,14 +33,6 @@
       formControlName="password"
     >
     </aut-input>
-    <input
-      type="file"
-      name="image"
-      id="image"
-      class="text-sm text-white bg-transparent mb-3"
-      (change)="onFileSelect($event)"
-      accept="image/*"
-    />
     <aut-button
       type="submit"
       variant="primary"
@@ -50,10 +41,10 @@
       >Sign Up</aut-button
     >
     <p class="text-sm font-semibold text-slate mt-6">
-      Already Registered User? Click here to login
+      Already Registered User?
       <a
         [routerLink]="['/user/sign-in']"
-        class="font-semibold text-cornFlower hover:underline cursor-pointer"
+        class="font-semibold text-cornFlower hover:underline cursor-pointer ml-1"
         >Sign in</a
       >
     </p>

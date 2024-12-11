@@ -19,6 +19,7 @@
     --oxBlood: rgb(185 28 28);
     --cornFlower: rgb(59 130 246);
     --moroccan: rgb(30 58 138);
+    --bg-image: url('/assets/image/.jpg');
   }
   .light {
     --white: rgb(0, 0, 0);
@@ -36,7 +37,12 @@
     --oxBlood: rgb(239 68 68);
     --cornFlower: rgb(30 58 138);
     --moroccan: rgb(59 130 246);
+    --bg-image: url('/assets/image/.jpg');
   }
+}
+
+.bgImage {
+  background-image: var(--bg-image);
 }
 
 * {

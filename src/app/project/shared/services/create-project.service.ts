@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
-import { ProjectDetails} from '../model/project.model';
+import { ProjectDetails } from '../model/project.model';
 import { YamlService } from './yaml.service';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class CreateProjectService {
 
   createProject(newProjectData: ProjectDetails) {
     this.http
-      .post(`${this._baseUrl}v1/project/createProjectWithOutLogIn`, newProjectData)      
+      .post(`${this._baseUrl}v1/project/createProject`, newProjectData)
       .subscribe({
         next: (res) => {
           console.log(
@@ -39,27 +39,26 @@ export class CreateProjectService {
   }
 
   updateYamlFormData(projectId: string, editedProjectData: ProjectDetails) {
-    this.http.patch(`${this._baseUrl}v1/project/${projectId}`, editedProjectData, {
-      headers: { 'Content-Type': 'application/json' },
-    }).subscribe({
+    this.http
+      .patch(`${this._baseUrl}v1/project/${projectId}`, editedProjectData, {
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .subscribe({
         next: () => {
           alert('YAML updated successfully');
         },
         error: () => {
           alert('YAML not updated');
-        },        
+        },
       });
   }
 
   updateYamlEditorData(formData: FormData, projectId: string) {
     this.http
-      .patch(
-        `${this._baseUrl}v1/project/updateFile/${projectId}`,
-        formData
-      )
+      .patch(`${this._baseUrl}v1/project/updateFile/${projectId}`, formData)
       .subscribe({
         next: () => {
-          alert('File Saved Successfully')
+          alert('File Saved Successfully');
         },
         error: (error) => {
           alert(`File is not saved due to ${error}`);

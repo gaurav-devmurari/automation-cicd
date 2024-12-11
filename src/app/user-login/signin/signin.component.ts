@@ -22,9 +22,9 @@ export class SigninComponent {
       password: ['', [Validators.required]],
     });
   }
-
-  login() {
+  isSuccess = false;
+  async login() {
     const model = this.loginForm.value as UserLogin;
-    this.userLoginService.login(model);
+    this.isSuccess = await this.userLoginService.login(model);
   }
 }

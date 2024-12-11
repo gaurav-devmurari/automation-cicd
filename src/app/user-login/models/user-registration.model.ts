@@ -6,8 +6,7 @@ export interface UserRegistrationDetails {
 }
 
 export interface UserRegistrationResponse {
-  message: string
+  message: string;
+  statusCode?: string;
+  error?: string;
 }
-
-
-
