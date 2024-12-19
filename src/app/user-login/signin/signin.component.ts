@@ -1,3 +1,4 @@
+import { LoaderService } from './../../shared/services/loader.service';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,7 +16,8 @@ export class SigninComponent {
   constructor(
     private formBuilder: FormBuilder,
     private userLoginService: UserLoginService,
-    private route: Router
+    private route: Router,
+    private loaderService: LoaderService
   ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -24,7 +26,9 @@ export class SigninComponent {
   }
   isSuccess = false;
   async login() {
+    this.loaderService.show();
     const model = this.loginForm.value as UserLogin;
     this.isSuccess = await this.userLoginService.login(model);
+    this.loaderService.hide();
   }
 }

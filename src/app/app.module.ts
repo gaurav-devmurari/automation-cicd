@@ -19,9 +19,10 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FormsModule } from '@angular/forms';
 import { UserLoginService } from './user-login/service/user-login.service';
+import { LoaderComponent } from './shared/components/loader/loader.component';
 
 @NgModule({
-  declarations: [AppComponent, FooterComponent, HeaderComponent, HomeComponent],
+  declarations: [AppComponent, FooterComponent, HeaderComponent, HomeComponent, LoaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

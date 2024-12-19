@@ -12,7 +12,7 @@
 }
 
 .heading {
-  @apply text-center py-2 mb-2 font-bold tracking-wider bg-charcoal rounded-lg text-lg text-white;
+  @apply text-center py-2 mb-2 font-bold tracking-wider bg-charcoal rounded-lg text-lg text-white border-slate border-2;
 }
 
 ngx-monaco-editor {
@@ -21,4 +21,8 @@ ngx-monaco-editor {
 
 .selectClasses {
   @apply py-2 pl-2 w-full text-base bg-transparent border-0 border-b-2 text-concrete border-charcoal focus:outline-none focus:border-forest mt-2;
+}
+
+::ng-deep .non-interactive .monaco-editor {
+  pointer-events: none;
 }

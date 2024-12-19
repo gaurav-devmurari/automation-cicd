@@ -5,6 +5,7 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { DesignSystemService } from '@design-system/services/design-system.service';
 
 @Component({
   selector: 'app-project-list',
@@ -22,7 +23,8 @@ export class ProjectListComponent implements OnInit {
     private projectListService: ProjectListService,
     private http: HttpClient,
     private route: Router,
-    @Inject(PLATFORM_ID) private platformId: string
+    @Inject(PLATFORM_ID) private platformId: string,
+    private toastr: DesignSystemService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this._baseUrl = environment.apiUrl;
@@ -32,6 +34,18 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getProjectList();
+  }
+
+  updateList(event: boolean) {
+    if (event) {
+      setTimeout(() => {
+        this.getProjectList();
+      }, 500);
+    }
+  }
+
+  getProjectList() {
     if (this.token != null) {
       this.projectListService
         .getUserProjects(this._baseUrl, this.token)
@@ -44,19 +58,6 @@ export class ProjectListComponent implements OnInit {
             data.updatedAt = this.formatDateTime(updatedTime);
           });
         });
-    } else {
-      // this.http
-      //   .get(`${this._baseUrl}v1/project/getProjects`)
-      //   .subscribe((res) => {
-      //     this.projectList = res as ProjectList[];
-      //     this.projectList.filter((data) => {
-      //       const createdTime = new Date(data.createdAt);
-      //       const updatedTime = new Date(data.createdAt);
-      //       data.createdAt = this.formatDateTime(createdTime);
-      //       data.updatedAt = this.formatDateTime(updatedTime);
-      //     });
-      //   });
-      
     }
   }
 

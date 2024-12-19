@@ -1,6 +1,5 @@
-<!-- <div class="z-50 h-full grid place-items-center fixed w-full bg-gray-900/10">
-  <img src="/assets/image/loader.gif" class="w-20" />
-</div> -->
+<app-loader></app-loader>
+<aut-toastr></aut-toastr>
 <div
   class="flex flex-col min-h-screen"
   [ngClass]="mode === 'dark' ? 'dark' : 'light'"
@@ -9,7 +8,7 @@
     class="fixed top-0 z-30"
     (modeEmmiter)="getValue($event)"
   ></app-header>
-  <div class="grow bgImage bg-cover bg-no-repeat min-h-screen">
+  <div class="grow bg-spaceGray bg-cover bg-no-repeat min-h-screen">
     <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>

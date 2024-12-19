@@ -1,23 +1,30 @@
 export interface GitHub {
-  github_name?: string,
-  on: branchActionModel,
-  git_jobs: githubJobModel,
+  github_name: string;
+  on: GitHubTriggers;
+  git_jobs: GitJob[];
 }
 
-export type branchActionModel = Record<string, branchesModel>;
-
-export interface branchesModel {
-  branches: string[],
-}
-export type githubJobModel = Record<string, githubModel>;
-
-export interface githubModel {
-  runs: string,
-  steps: stepsArray[],
+export interface GitHubTriggers {
+  pull: GitHubBranchTrigger;
+  push: GitHubBranchTrigger;
+  pull_request: GitHubBranchTrigger;
 }
 
-export interface stepsArray {
-  name?: string,
-  uses?: string,
-  run?: string,
+export interface GitHubBranchTrigger {
+  branches: string[];
 }
+
+export interface GitJob {
+  [jobName: string]: GitJobDetails;
+}
+
+export interface GitJobDetails {
+  'runs-on': string;
+  steps: GitStep[];
+}
+
+export type GitStep = {
+  name: string;
+} & GitStepAction;
+
+export type GitStepAction = { uses: string } | { run: string };

@@ -13,6 +13,8 @@ import {
 
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { LoaderService } from '@common-services/loader.service';
+import { DesignSystemService } from '@design-system/services/design-system.service';
 
 @Component({
   selector: 'app-header',
@@ -32,7 +34,9 @@ export class HeaderComponent implements OnInit {
     private renderer: Renderer2,
     private route: Router,
     private userLoginService: UserLoginService,
-    @Inject(PLATFORM_ID) private platformId: object
+    @Inject(PLATFORM_ID) private platformId: object,
+    private loader: LoaderService,
+    private toastr: DesignSystemService
   ) {}
 
   isHidden = true;
@@ -54,10 +58,18 @@ export class HeaderComponent implements OnInit {
   }
 
   signOut() {
+    this.loader.show();
     localStorage.clear();
     this.toggleMenu();
     this.route.navigate(['']);
     this.isHidden = true;
+    this.loader.hide();
+    this.toastr.toastr(
+      'See you again',
+      'You have been logged out!',
+      'success',
+      3000
+    );
   }
   themeIcon = true;
   toggleTheme() {

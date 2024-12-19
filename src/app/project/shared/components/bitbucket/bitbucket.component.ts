@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { IconPosition } from '@design-system/button/models/button.enum';
 import {
   AbstractControl,
@@ -9,6 +15,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProjectList } from '../../model/project.model';
+import { DesignSystemService } from '@design-system/services/design-system.service';
+import { BitBucketArray } from '../../model/demoPipelines';
+import { BitBucket } from './bitbucket.model';
 
 @Component({
   selector: 'app-bitbucket',
@@ -21,15 +30,20 @@ export class BitbucketComponent implements OnInit {
   IconPosition = IconPosition;
   branch = true;
   tag = true;
+  flag = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private toastr: DesignSystemService
+  ) {}
 
   ngOnInit(): void {
-    this.addBranch();
-    this.addTag();
-    if (this.selectedProject) {
-      this.setYamlDataToForm();
-    }
+    // this.addBranch();
+    // this.addTag();
+    // if (this.selectedProject) {
+    //   this.flag = true;
+    // }
+    // this.setYamlDataToForm();
   }
 
   checkValue() {
@@ -91,7 +105,7 @@ export class BitbucketComponent implements OnInit {
 
   removeBranch(): void {
     if (this.branches.length == 1) {
-      alert("Last branch can't be deleted!");
+      this.toastr.toastr("Last branch can't be deleted!", '', 'info', 3000);
       return;
     }
     this.branches.removeAt(this.branches.length - 1);
@@ -99,7 +113,7 @@ export class BitbucketComponent implements OnInit {
 
   removeTag(): void {
     if (this.tags.length == 1) {
-      alert("Last tag can't be deleted!");
+      this.toastr.toastr("Last tag can't be deleted!", '', 'info', 3000);
       return;
     }
     this.tags.removeAt(this.branches.length - 1);
@@ -108,7 +122,7 @@ export class BitbucketComponent implements OnInit {
   removeStep(branchOrTag: AbstractControl, stepIndex: number): void {
     const steps = branchOrTag.get('steps') as FormArray;
     if (steps.length == 1) {
-      alert("Last step can't be deleted!");
+      this.toastr.toastr("Last step can't be deleted!", '', 'info', 3000);
       return;
     }
     steps.removeAt(stepIndex);
@@ -117,7 +131,7 @@ export class BitbucketComponent implements OnInit {
   removeAllSteps(branchOrTag: AbstractControl): void {
     const steps = branchOrTag.get('steps') as FormArray;
     if (steps.length == 1) {
-      alert("Last step can't be deleted!");
+      this.toastr.toastr("Last step can't be deleted!", '', 'info', 3000);
       return;
     }
     if (steps.length > 1) {
@@ -126,70 +140,74 @@ export class BitbucketComponent implements OnInit {
       }
     }
   }
-  setYamlDataToForm() {
-    let branchControl = 0;
-    let tagControl = 0;     
-    const selectedAction = this.selectedProject
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .selectedActions as unknown as any[];
-    selectedAction.forEach((action) => {
-      const branchStepsArray = this.branches.controls
-        .at(branchControl)
-        .get('steps') as FormArray;
-      const tagStepsArray = this.tags.controls
-        .at(tagControl)
-        .get('steps') as FormArray;
-      if (action.type === 'branch') {
-        this.branch = true;
-        this.branches.controls.at(branchControl).patchValue({
-          name: action.name,
-        });
-        action.steps.forEach((element) => {
-          branchStepsArray.at(branchStepsArray.length - 1).patchValue({
-            name: element.name,
-            actions: element.actions,
-          });
-          branchStepsArray.push(this.createDefaultStep());
-        });
-        branchControl++;
-        this.branches.push(this.createBranchOrTag());
-      } else {
-        this.tag = true;
-        this.tags.controls.at(tagControl).patchValue({
-          name: action.name,
-        });
-        action.steps.forEach((element) => {
-          tagStepsArray.at(tagStepsArray.length - 1).patchValue({
-            name: element.name,
-            actions: element.actions,
-          });
-          tagStepsArray.push(this.createDefaultStep());
-        });
-        tagControl++;
-        this.tags.push(this.createBranchOrTag());
-      }
-    });
-    if (this.branches.controls.length > branchControl) {
-      this.branches.removeAt(branchControl);
-    }
-    if (this.tags.controls.length > tagControl) {
-      this.tags.removeAt(tagControl);
-    }
-    this.branches.controls.forEach((element) => {
-      const steps = element.get('steps') as FormArray;
-      steps.controls.forEach((step) => {
-        if (step.get('name').value === '') {
-          steps.removeAt(steps.length - 1);
-        }
-      });
-    });
-    this.tags.controls.forEach((element) => {
-      const steps = element.get('steps') as FormArray;
-      steps.controls.forEach((step) => {
-        if (step.get('name').value === '') {
-          steps.removeAt(steps.length - 1);
-        }
-      });
-    });
-  }
+  // setYamlDataToForm() {
+  //   let branchControl = 0;
+  //   let tagControl = 0;
+  //   const selectedAction = this.selectedProject.selectedActions as BitBucket[];
+  //   selectedAction.forEach((action) => {
+  //     const branchStepsArray = this.branches.controls
+  //       .at(branchControl)
+  //       ?.get('steps') as FormArray;
+
+  //     const tagStepsArray = this.tags.controls
+  //       .at(tagControl)
+  //       ?.get('steps') as FormArray;
+
+  //     if (action.type === 'branch') {
+  //       this.branch = true;
+
+  //       this.branches.controls.at(branchControl).patchValue({
+  //         name: action.name,
+  //       });
+  //       action.steps.forEach((element) => {
+  //         branchStepsArray.at(branchStepsArray.length - 1).patchValue({
+  //           name: element.name,
+  //           actions: element.actions,
+  //         });
+  //         branchStepsArray.push(this.createDefaultStep());
+  //       });
+  //       branchControl++;
+  //       this.branches.push(this.createBranchOrTag());
+  //     } else {
+  //       this.tag = true;
+  //       this.tags.controls.at(tagControl).patchValue({
+  //         name: action.name,
+  //       });
+  //       action.steps.forEach((element) => {
+  //         tagStepsArray.at(tagStepsArray.length - 1).patchValue({
+  //           name: element.name,
+  //           actions: element.actions,
+  //         });
+  //         tagStepsArray.push(this.createDefaultStep());
+  //       });
+  //       tagControl++;
+  //       this.tags.push(this.createBranchOrTag());
+  //     }
+  //   });
+  //   if (this.branches.controls.length > branchControl) {
+  //     this.branches.removeAt(branchControl);
+  //   }
+  //   if (this.tags.controls.length > tagControl) {
+  //     this.tags.removeAt(tagControl);
+  //   }
+  //   this.branches.controls.forEach((element) => {
+  //     const steps = element.get('steps') as FormArray;
+  //     steps.controls.forEach((step) => {
+  //       if (step.get('name').value === '') {
+  //         steps.removeAt(steps.length - 1);
+  //       }
+  //     });
+  //   });
+  //   this.tags.controls.forEach((element) => {
+  //     const steps = element.get('steps') as FormArray;
+  //     steps.controls.forEach((step) => {
+  //       if (step.get('name').value === '') {
+  //         steps.removeAt(steps.length - 1);
+  //       }
+  //     });
+  //   });
+  //   this.bitbucketForm.updateValueAndValidity();
+  //   this.branches.updateValueAndValidity();
+  //   this.tags.updateValueAndValidity();
+  // }
 }

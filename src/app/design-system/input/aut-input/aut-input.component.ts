@@ -3,6 +3,7 @@
 import {
   Attribute,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   forwardRef,
@@ -35,42 +36,46 @@ export class AutInputComponent implements ControlValueAccessor {
   @Input() variant: InputVariant = 'primary';
   @Input() id = '';
   @Input() name = '';
+  @Input() pattern = '';
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output('blur') onBlur = new EventEmitter<string>();   
+  @Output('blur') onBlur = new EventEmitter<string>();
   @Output('input') input = new EventEmitter<string>();
-
 
   value = '';
 
-  constructor(@Attribute('class') public classList: string) {}
+  constructor(
+    @Attribute('class') public classList: string,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-   // eslint-disable-next-line @typescript-eslint/no-empty-function
-   private onChange: (value: string) => void = () => {};
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private onChange: (value: string) => void = () => {};
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private onTouched: () => void = () => {};
 
   writeValue(value: string): void {
     if (value !== undefined) {
-      this.value = value; 
+      this.value = value;
+      this.cdr.detectChanges();
     }
   }
 
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       event.preventDefault();
-      this.onInput(); 
+      this.onInput();
     }
   }
 
   onInput() {
-    this.onChange(this.value);  
-    this.onTouched();           
-    this.input.emit(this.value);  
+    this.onChange(this.value);
+    this.onTouched();
+    this.input.emit(this.value);
   }
 
   onBlurEvent() {
-    this.onTouched();  
-    this.onBlur.emit(this.value);  
+    this.onTouched();
+    this.onBlur.emit(this.value);
   }
 
   registerOnChange(fn: (value: string) => void): void {

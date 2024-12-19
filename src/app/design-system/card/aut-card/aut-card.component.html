@@ -1,40 +1,37 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-<div
-  class="w-72 shadow-[inset_0px_0px_15px_5px_black] hover:shadow-[0px_0px_10px_5px_black] bg-gray-900/10 px-8 py-5 hover:scale-105 m-auto rounded-lg backdrop-blur-sm hover:backdrop-blur-lg"
->
-  <div
-    class="w-16 pl-8 static -ml-8 text-black text-2xl rounded-e-xl bg-orange-400 mb-3"
-  >
-    {{ index + 1 }}
+<div class="project-card">
+  <!-- Repository -->
+  <div class="card-row">
+    <div class="label">Repository</div>
+    <div class="value">: {{ project.repoName }}</div>
   </div>
-  <div class="">Repository :</div>
-  <div class="text-lg font-semibold pl-10">
-    {{ project.repoName }}
+
+  <!-- Project -->
+  <div class="card-row">
+    <div class="label">Project</div>
+    <div class="value">: {{ project.projectType }}</div>
   </div>
-  <div class="">Project :</div>
-  <div class="text-lg font-semibold pl-10">
-    {{ project.projectType }}
+
+  <!-- Created -->
+  <div class="card-row">
+    <div class="label">Created</div>
+    <div class="value">: {{ project.createdAt.split(' ')[0] }}</div>
   </div>
-  <div class="">Created :</div>
-  <div class="text-lg font-semibold pl-10">
-    {{ project.createdAt }}
+
+  <!-- Updated -->
+  <div class="card-row">
+    <div class="label">Updated</div>
+    <div class="value">: {{ project.updatedAt.split(' ')[0] }}</div>
   </div>
-  <div class="">Updated :</div>
-  <div class="text-lg font-semibold pl-10">
-    {{ project.updatedAt }}
-  </div>
-  <div class="flex justify-evenly mt-2">
-    <div class="py-3">
-      <i
-        class="fa-regular fa-pen-to-square text-3xl hover:scale-105 hover:cursor-pointer"
-        (click)="getProjectDetails(project.id)"
-      ></i>
-    </div>
-    <!-- <div class="py-3">
-      <i
-        class="fa-solid fa-trash-can text-3xl hover:scale-105 hover:cursor-pointer"
-      ></i>
-    </div> -->
+
+  <!-- Actions -->
+  <div class="card-actions mt-5">
+    <button (click)="getProjectDetails(project.id)" title="View Details">
+      <i class="fa fa-eye"></i> Update
+    </button>
+    <button (click)="deleteProject(project.id)" title="Delete Project">
+      <i class="fa fa-trash"></i> Delete
+    </button>
   </div>
 </div>

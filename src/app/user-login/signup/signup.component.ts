@@ -2,6 +2,7 @@ import { UserRegistrationService } from './../service/user-registration.service'
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserRegistrationDetails } from '../models/user-registration.model';
+import { LoaderService } from '@common-services/loader.service';
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +13,8 @@ export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
-    private userRegistrationService: UserRegistrationService
+    private userRegistrationService: UserRegistrationService,
+    private loader: LoaderService
   ) {}
 
   ngOnInit(): void {
@@ -24,12 +26,15 @@ export class SignupComponent implements OnInit {
   }
 
   async signUp() {
-    const formData = new FormData();
-    formData.append('name', this.signupForm.get('name')?.value);
-    formData.append('email', this.signupForm.get('email')?.value);
-    formData.append('password', this.signupForm.get('password')?.value);
-    const userDetails = formData as unknown as UserRegistrationDetails;
+    this.loader.show();
+    const body = {
+      name: this.signupForm.get('name')?.value,
+      email: this.signupForm.get('email')?.value,
+      password: this.signupForm.get('password')?.value,
+    };
+    const userDetails = body as unknown as UserRegistrationDetails;
     const isSuccess =
       await this.userRegistrationService.userRegistration(userDetails);
+    this.loader.hide();
   }
 }

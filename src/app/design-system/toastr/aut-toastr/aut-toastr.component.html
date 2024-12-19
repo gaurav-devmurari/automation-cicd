@@ -1,45 +1,65 @@
-<div [class]="toastrClassList">
-  <div class="content-center mx-2">
+<div
+  *ngIf="isToastr"
+  class="fixed bg-white border rounded-lg shadow-lg flex items-start p-4 space-x-4 transition-transform transform left-0 right-0 w-fit m-auto top-14 z-[100]"
+  [ngClass]="{
+    'border-green-500 bg-green-50': type === 'success',
+    'border-blue-500 bg-blue-50': type === 'info',
+    'border-yellow-500 bg-yellow-50': type === 'warning',
+    'border-red-500 bg-red-50': type === 'danger',
+  }"
+>
+  <!-- Icon Section -->
+  <div>
     <img
       src="assets/image/check.svg"
-      alt="icon"
-      width="20px"
-      height="20px"
+      alt="Success Icon"
+      class="w-6 h-6"
       *ngIf="type === 'success'"
     />
     <img
       src="assets/image/info.svg"
-      alt="icon"
-      width="20px"
-      height="20px"
+      alt="Info Icon"
+      class="w-6 h-6"
       *ngIf="type === 'info'"
     />
     <img
       src="assets/image/warning.svg"
-      alt="icon"
-      width="20px"
-      height="20px"
+      alt="Warning Icon"
+      class="w-6 h-6"
       *ngIf="type === 'warning'"
     />
     <img
       src="assets/image/danger.svg"
-      alt="icon"
-      width="20px"
-      height="20px"
+      alt="Danger Icon"
+      class="w-6 h-6"
       *ngIf="type === 'danger'"
     />
   </div>
-  <div class="px-1 max-w-[40vw]">
-    <div class="font-semibold">
-      {{ toastrTitle }}
+
+  <!-- Content Section -->
+  <div class="flex-1">
+    <div class="flex justify-between items-center">
+      <h3
+        class="text-lg font-semibold"
+        [ngClass]="{
+          'text-green-600': type === 'success',
+          'text-blue-600': type === 'info',
+          'text-yellow-600': type === 'warning',
+          'text-red-600': type === 'danger',
+        }"
+      >
+        {{ title }}
+      </h3>
       <img
         src="assets/image/x.svg"
-        alt="icon"
-        width="10px"
-        class="float-right mr-1 mt-1 ml-1 hover:w-3"
+        alt="Close Icon"
+        class="w-4 h-4 cursor-pointer hover:w-5 hover:h-5 transition-all"
         *ngIf="closeButton"
+        (click)="isToastr = false"
       />
     </div>
-    <div>{{ toastrMessage }}</div>
+    <p class="text-sm text-gray-700 mt-2">
+      {{ message }}
+    </p>
   </div>
 </div>

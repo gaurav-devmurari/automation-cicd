@@ -1,5 +1,11 @@
 import { IconPosition } from '@design-system/button/models/button.enum';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -7,26 +13,41 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { ProjectList } from '../../model/project.model';
+import { DesignSystemService } from '@design-system/services/design-system.service';
+import { Azure } from './azure.model';
+import { AzureArray } from '../../model/demoPipelines';
 
 @Component({
   selector: 'app-azure',
   templateUrl: './azure.component.html',
   styleUrl: './azure.component.scss',
 })
-export class AzureComponent implements OnInit {
+export class AzureComponent implements OnInit, OnChanges {
   @Input() selectedProject: ProjectList;
   @Input() azureForm: FormGroup;
+  @Input() projectType = '';
+  selectedAction: Azure[];
 
   IconPosition = IconPosition;
   trigger: string[] = [];
+  flag = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private toastr: DesignSystemService
+  ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.selectedAction = AzureArray[this.projectType];
+    this.setYamlDataToForm();
+  }
 
   ngOnInit(): void {
     this.addAzureStage();
     if (this.selectedProject) {
-      this.setYamlDataToForm();
+      this.flag = true;
     }
+    this.setYamlDataToForm();
   }
 
   get azure_stages(): FormArray {
@@ -83,7 +104,7 @@ export class AzureComponent implements OnInit {
   removeJobs(jobControl: AbstractControl) {
     const job = jobControl as FormArray;
     if (job.length == 1) {
-      alert("Last job can't be deleted!");
+      this.toastr.toastr("Last job can't be deleted!", '', 'info', 3000);
       return;
     }
     job.removeAt(job.length - 1);
@@ -96,7 +117,7 @@ export class AzureComponent implements OnInit {
   removeSteps(stepControl: AbstractControl) {
     const step = stepControl as FormArray;
     if (step.length == 1) {
-      alert("Last step can't be deleted!");
+      this.toastr.toastr("Last step can't be deleted!", '', 'info', 3000);
       return;
     }
     step.removeAt(step.length - 1);
@@ -105,13 +126,20 @@ export class AzureComponent implements OnInit {
   removeStage() {
     const stage = this.azureForm.get('azure_stages') as FormArray;
     if (stage.length == 1) {
-      alert("Last stage can't be deleted!");
+      this.toastr.toastr("Last stage can't be deleted!", '', 'info', 3000);
       return;
     }
+    this.toastr.toastr(`Stage ${stage.length} deleted!`, '', 'info', 3000);
     stage.removeAt(stage.length - 1);
   }
   setYamlDataToForm() {
-    const selectedAction = this.selectedProject.selectedActions[0];
+    let selectedAction;
+    if (this.flag == true) {
+      selectedAction = this.selectedProject.selectedActions;
+    } else {
+      selectedAction = this.selectedAction;
+    }
+
     this.azureForm.patchValue({
       trigger: selectedAction.trigger,
     });

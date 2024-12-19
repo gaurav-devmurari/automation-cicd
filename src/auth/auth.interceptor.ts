@@ -19,12 +19,17 @@ export function authInterceptor(
 
   if (isPlatformBrowser(platformId)) {
     token = localStorage.getItem('token');
+  }
+
+  if (token) {
     req = req.clone({
-      headers: req.headers.set('Authorization', 'Bearer ' + token),
+      headers: req.headers.set('Authorization', `Bearer ${token}`),
     });
   }
 
-  // console.log({ 'request from interceptor': req.url });
+  req = req.clone({ withCredentials: true });
+
+  // return next(req);
   return next(req).pipe(
     tap({
       next: (result) => {
@@ -38,15 +43,16 @@ export function authInterceptor(
       },
       error: (error) => {
         if (error.status === 401 || error.status === 403) {
-          localStorage.clear();
-          this.router.navigate(['/']);
+          // localStorage.clear();
+          // this.router.navigate(['/']);
         } else {
-          this.router.navigate(['/']);
+          // this.router.navigate(['/']);
         }
       },
     }),
     map((event) => {
       if (event instanceof HttpResponse && event.body) {
+        // Return only the data from the response
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const data = event.body as any;
         return event.clone({ body: data.data });
@@ -56,10 +62,10 @@ export function authInterceptor(
     catchError((error: HttpErrorResponse) => {
       // Handle errors here
       if (error.status === 401 || error.status === 403) {
-        localStorage.clear();
-        this.router.navigate(['/']);
+        // localStorage.clear();
+        // this.router.navigate(['/']);
       } else {
-        this.router.navigate(['/']);
+        // this.router.navigate(['/']);
       }
       // Re-throw the error so that it can be handled by the caller
       return throwError(() => error);

@@ -1,3 +1,4 @@
+import { BitBucket } from '../components/bitbucket/bitbucket.model';
 import { Repository } from './project.enum';
 
 export interface Project {
@@ -73,35 +74,36 @@ export interface Azure {
   on: onModel;
 }
 export interface jobArray {
-  'runs-on': string,
-  steps: step[]
+  'runs-on': string;
+  steps: step[];
 }
 export interface step {
-  name: string
+  name: string;
 }
 
-
 export interface onModel {
-  push: branchModel,
-  pull: branchModel,
-  pull_request: branchModel
+  push: branchModel;
+  pull: branchModel;
+  pull_request: branchModel;
 }
 export interface branchModel {
   branches: string[];
 }
 
 export interface ProjectList {
-  id: string;
   repoName: string;
   projectType: string;
-  createdAt: string;
   nodeVersion: string;
+  manualEntered: boolean;
+  selectedActions: GitLab[] | GitHub[] | Azure[] | BitBucket[];
+  fileUrl: string;
+  cookieId: string;
+  id: string;
+  createdAt: string;
+  userId: string;
   version: string;
   current_version: string;
   updatedAt: string;
-  fileUrl: string;
-  manualEntered: boolean;
-  selectedActions: GitLab | GitHub | Azure;
 }
 
 export interface SelectedActions {
@@ -169,7 +171,6 @@ export interface azure_steps {
 }
 
 export type branchActionModel = Record<string, branchesModel>;
-
 
 export interface branchesModel {
   branches: string[];

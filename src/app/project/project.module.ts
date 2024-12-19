@@ -25,7 +25,7 @@ const routes: Routes = [
       {
         path: 'list',
         component: ProjectListComponent,
-        canActivate: [Guard]
+        canActivate: [Guard],
       },
       {
         path: 'create',
@@ -34,7 +34,7 @@ const routes: Routes = [
       {
         path: 'edit/:projectId',
         component: CreateProjectComponent,
-        canActivate: [Guard]
+        canActivate: [Guard],
       },
     ],
   },
@@ -48,7 +48,7 @@ const routes: Routes = [
     BitbucketComponent,
     GitlabComponent,
     GithubComponent,
-    AzureComponent
+    AzureComponent,
   ],
   imports: [
     CommonModule,

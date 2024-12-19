@@ -14,3 +14,7 @@
   background-position-y: center;
   border-radius: 10px;
 }
+
+.bgImage {
+  @apply bg-[url('/assets/image/bannerBg.png')] bg-no-repeat bg-center;
+}

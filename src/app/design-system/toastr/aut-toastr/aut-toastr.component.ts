@@ -1,11 +1,5 @@
-import {
-  Attribute,
-  ChangeDetectionStrategy,
-  Component,
-  forwardRef,
-  Input,
-} from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DesignSystemService } from './../../services/design-system.service';
+import { Attribute, Component, Input } from '@angular/core';
 
 enum Toastr {
   Success = 'success',
@@ -14,37 +8,47 @@ enum Toastr {
   Danger = 'danger',
 }
 
-type ToastrType = `${Toastr}`;
+export type ToastrType = `${Toastr}`;
 
 @Component({
   selector: 'aut-toastr',
   templateUrl: './aut-toastr.component.html',
   styleUrl: './aut-toastr.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => AutToastrComponent),
-      multi: true,
-    },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AutToastrComponent {
-  @Input() toastrTitle = '';
-  @Input() toastrMessage = '';
+  @Input() title = '';
+  @Input() message = '';
   @Input() type: ToastrType = 'info';
-  @Input() closeButton: boolean;
-  @Input() iteration: 'infinite' | 'once' = 'once';
-  @Input() time = '';
+  @Input() closeButton = false;
+  @Input() duration = 0;
+  isToastr = false;
 
-  constructor(@Attribute('class') public classList: string) {}
+  constructor(
+    @Attribute('class') public classList: string,
+    private designService: DesignSystemService
+  ) {
+    this.designService.toast$.subscribe(
+      (res: {
+        title: string;
+        message: string;
+        type: ToastrType;
+        duration: number;
+      }) => {
+        if (res) {
+          this.isToastr = true;
+          this.title = res.title;
+          this.message = res.message;
+          this.type = res.type;
+          this.duration = res.duration;
+          setTimeout(() => {
+            this.isToastr = false;
+          }, this.duration);
+        }
+      }
+    );
+  }
 
   public get toastrClassList(): string[] {
-    return [
-      'toarst',
-      `toarst--${this.type}`,      
-      `toarst--${this.iteration}`,
-      this.classList,
-    ].filter(Boolean);
+    return ['toarst', `toarst--${this.type}`, this.classList].filter(Boolean);
   }
 }

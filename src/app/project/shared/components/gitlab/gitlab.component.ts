@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -8,6 +8,8 @@ import {
 } from '@angular/forms';
 import { IconPosition } from '@design-system/button/models/button.enum';
 import { ProjectList } from '../../model/project.model';
+import { GitLabArray } from '../../model/demoPipelines';
+import { GitLab } from './gitlab.model';
 
 @Component({
   selector: 'app-gitlab',
@@ -17,6 +19,7 @@ import { ProjectList } from '../../model/project.model';
 export class GitlabComponent implements OnInit {
   @Input() selectedProject: ProjectList;
   @Input() gitlabForm: FormGroup;
+  @Input() projectType = '';
   stages: string[] = [];
   scripts: string[] = [];
   IconPosition = IconPosition;
@@ -32,15 +35,25 @@ export class GitlabComponent implements OnInit {
     'variables',
     'when',
   ];
+  flag = false;
+  selectedAction: GitLab[];
 
   constructor(private fb: FormBuilder) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.selectedAction = GitLabArray[this.projectType];
+    if (this.selectedAction) {
+      this.setYamlDataToForm();
+    }
+  }
 
   ngOnInit(): void {
     this.addRule();
     this.addJob();
     if (this.selectedProject) {
-      this.setYamlDataToForm();
+      this.flag = true;
     }
+    this.setYamlDataToForm();
   }
 
   get ruless(): FormArray {
@@ -54,10 +67,10 @@ export class GitlabComponent implements OnInit {
   get jobs(): FormArray {
     return this.gitlabForm.get('jobs') as FormArray;
   }
-  updateStages(event: string[]){
-    this.stages = event
+  updateStages(event: string[]) {
+    this.stages = event;
   }
-  
+
   checkValue() {
     const a = this.gitlabForm.get('ruless').value;
     const b = a.reduce(
@@ -177,9 +190,13 @@ export class GitlabComponent implements OnInit {
   }
 
   setYamlDataToForm() {
-    const selectedAction = this.selectedProject.selectedActions[0];
+    let selectedAction = null;
+    if (this.flag == true) {
+      selectedAction = this.selectedProject.selectedActions[0];
+    } else {
+      selectedAction = this.selectedAction[0];
+    }
     this.jobRules = selectedAction.rule_name;
-    console.log(selectedAction);
     this.gitlabForm.patchValue({
       stages: selectedAction.stages,
     });

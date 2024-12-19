@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Project, Repository } from '../shared/model/project.enum';
 import {
+  ChangeDetectorRef,
   Component,
   Inject,
   OnInit,
@@ -20,6 +21,14 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectListService } from '../shared/services/project-list.service';
 import { YamlService } from '../shared/services/yaml.service';
 import { HttpClient } from '@angular/common/http';
+import {
+  AzureArray,
+  BitBucketArray,
+  GitHubArray,
+  GitLabArray,
+} from '../shared/model/demoPipelines';
+import { BitBucket } from '../shared/components/bitbucket/bitbucket.model';
+import { GitHub, GitStep } from '../shared/components/github/github.model';
 
 @Component({
   selector: 'app-create-project',
@@ -78,10 +87,17 @@ export class CreateProjectComponent implements OnInit {
   });
 
   combinedForm = this.fb.group({
-    repoName: [''],
-    projectType: [''],
-    nodeVersion: [''],
-    manualEntered: [false],
+    repoName: ['', Validators.required],
+    projectType: ['', Validators.required],
+    nodeVersion: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(
+          /^(0[1-9]|1[0-9]|2[0-5])\.(0[0-9]|[1-9][0-9])\.(0[0-9]|[1-9][0-9])$/
+        ),
+      ],
+    ],
     bitbucketForm: this.bitbucketForm,
     gitlabForm: this.gitlabForm,
     githubForm: this.githubForm,
@@ -99,6 +115,7 @@ export class CreateProjectComponent implements OnInit {
       alwaysConsumeMouseWheel: false,
     },
     automaticLayout: true,
+    readOnly: true,
   };
 
   constructor(
@@ -108,7 +125,8 @@ export class CreateProjectComponent implements OnInit {
     private route: ActivatedRoute,
     private projectListService: ProjectListService,
     private createProjectService: CreateProjectService,
-    private YamlService: YamlService
+    private YamlService: YamlService,
+    private cdr: ChangeDetectorRef
   ) {
     this._baseUrl = environment.apiUrl;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -117,13 +135,27 @@ export class CreateProjectComponent implements OnInit {
         this.projectDetails(parseInt(data.projectId));
       }
     });
+
+    this.combinedForm.get('repoName').valueChanges.subscribe((data: string) => {
+      if (data) {
+        this.loadDefaultForm();
+      }
+    });
+
+    this.combinedForm
+      .get('projectType')
+      .valueChanges.subscribe((data: string) => {
+        if (data) {
+          this.loadDefaultForm();
+        }
+      });
   }
 
   toggle() {
     this.hide = !this.hide;
     this.manualEntered = !this.manualEntered;
   }
-
+  private token: string;
   ngOnInit() {
     this.repositories = Object.entries(Repository).map(([key, lable]) => ({
       key,
@@ -137,6 +169,9 @@ export class CreateProjectComponent implements OnInit {
       this.code = res;
     });
     this.isBrowser = isPlatformBrowser(this.platformId);
+    if (isPlatformBrowser(this.platformId)) {
+      this.token = localStorage.getItem('token');
+    }
   }
 
   get repoName(): string {
@@ -188,7 +223,9 @@ export class CreateProjectComponent implements OnInit {
           this.projectId,
           formDataToSubmit
         )
-      : this.createProjectService.createProject(formDataToSubmit);
+      : this.token
+        ? this.createProjectService.createProject(formDataToSubmit)
+        : this.createProjectService.createProjectWithoutToken(formDataToSubmit);
     console.log(
       'Payload for creating YAML----------------------------',
       formDataToSubmit
@@ -211,13 +248,157 @@ export class CreateProjectComponent implements OnInit {
   }
 
   setFormData() {
-    this.hide = this.selectedProject.manualEntered;
+    // this.hide = this.selectedProject.manualEntered;
     this.combinedForm.patchValue({
-      manualEntered: !this.selectedProject.manualEntered,
       projectType: this.selectedProject.projectType,
       repoName: this.selectedProject.repoName,
       nodeVersion: this.selectedProject.nodeVersion,
     });
+  }
+
+  // ---------------------------------    BitBucket   --------------------------------
+  setBitBucketForm(data: BitBucket[]): void {
+    const branchesArray = this.bitbucketForm.get('branches') as FormArray;
+    const tagsArray = this.bitbucketForm.get('tags') as FormArray;
+    this.removeEmptyEntries(branchesArray);
+    this.removeEmptyEntries(tagsArray);
+
+    data.forEach((entry) => {
+      if (entry.type === 'branch') {
+        branchesArray.push(this.createBitBucketEntry(entry));
+      } else if (entry.type === 'tag') {
+        tagsArray.push(this.createBitBucketEntry(entry));
+      }
+    });
+  }
+
+  private createBitBucketEntry(entry: BitBucket): FormGroup {
+    return this.fb.group({
+      name: [entry.name],
+      steps: this.fb.array(
+        entry.steps.map((step) =>
+          this.fb.group({
+            name: [step.name],
+            actions: this.fb.array(
+              step.actions.map((action) => this.fb.control(action))
+            ),
+          })
+        )
+      ),
+    });
+  }
+
+  private removeEmptyEntries(array: FormArray): void {
+    for (let i = array.length - 1; i >= 0; i--) {
+      const group = array.at(i) as FormGroup;
+      const name = group.get('name')?.value;
+      if (!name || name.trim() === '') {
+        array.removeAt(i);
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------------
+  // ---------------------------------    GitHub   -----------------------------------
+  branches: string[] = [];
+  setGitHubForm(data: GitHub) {
+    const selectedAction = data;
+    if (!selectedAction) return;
+
+    // Update visibility flags for actions
+    ['push', 'pull', 'pull_request'].forEach((action) => {
+      this[action] = !selectedAction.on[action];
+    });
+
+    // Extract and de-duplicate branches
+    this.branches = Array.from(
+      new Set(
+        Object.values(selectedAction.on).flatMap((trigger) => trigger.branches)
+      )
+    );
+
+    // Patch the form's main values
+    this.githubForm.patchValue({
+      githubName: selectedAction.github_name,
+      branchDef: this.branches,
+      push: selectedAction.on.push?.branches.join(', ') || '',
+      pull: selectedAction.on.pull?.branches.join(', ') || '',
+      pullRequest: selectedAction.on.pull_request?.branches.join(', ') || '',
+    });
+
+    // Patch GitHub jobs
+    const gitHubJobsArray = this.githubForm.get('githubJobs') as FormArray;
+    gitHubJobsArray.clear();
+
+    selectedAction.git_jobs.forEach((git_job) => {
+      const jobName = Object.keys(git_job)[0];
+      const jobDetails = git_job[jobName];
+
+      const jobGroup = this.createGhJob();
+      jobGroup.patchValue({
+        jobName,
+        runsOn: jobDetails['runs-on'],
+      });
+
+      const stepsArray = jobGroup.get('steps') as FormArray;
+      stepsArray.clear();
+
+      jobDetails.steps.forEach((step: GitStep) => {
+        const isUses = 'uses' in step;
+        stepsArray.push(
+          this.fb.group({
+            name: step.name,
+            useOrRun: isUses ? 'uses' : 'run',
+            stepValue: isUses ? step['uses'] : step['run'],
+          })
+        );
+      });
+      gitHubJobsArray.push(jobGroup);
+    });
+  }
+  createGhJob(): FormGroup {
+    return this.fb.group({
+      jobName: [''],
+      runsOn: [''],
+      needs: [''],
+      steps: this.fb.array([this.createSteps()]),
+    });
+  }
+
+  createSteps(): FormGroup {
+    return this.fb.group({
+      name: [''],
+      useOrRun: [''],
+      stepValue: [''],
+    });
+  }
+
+  // ---------------------------------------------------------------------------------
+  loadDefaultForm() {
+    const repoName = this.combinedForm.get('repoName').value as Repository;
+    const projectType = this.combinedForm.get('projectType').value as Project;
+
+    if (repoName && projectType) {
+      switch (repoName) {
+        case Repository.bitbucket:
+          const BitBucketData = BitBucketArray[projectType];
+          this.setBitBucketForm(BitBucketData);
+          break;
+        case Repository.gitlab:
+          const GitLabData = GitLabArray[projectType];
+          // this.setGitLabForm(GitLabData);
+          break;
+        case Repository.github:
+          const GitHubData = GitHubArray[projectType];
+          this.setGitHubForm(GitHubData[0]);
+          break;
+        case Repository.azure:
+          const AzureData = AzureArray[projectType];
+          // this.setAzureForm(AzureData);
+          break;
+      }
+    } else {
+    }
   }
 
   updateYAML() {

@@ -1,0 +1,67 @@
+/* Card Container */
+.project-card {
+  display: grid;
+  grid-template-rows: repeat(5, auto); /* 5 rows: 4 data rows + 1 action row */
+  grid-gap: 12px; /* Gap between rows */
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 10px auto;
+  width: 100%;
+  max-width: 400px;
+  font-family: 'Arial, sans-serif';
+  color: #333;
+}
+
+/* Grid Row */
+.card-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Label takes less space, Value more */
+  align-items: center;
+}
+
+.label {
+  font-weight: bold;
+  color: #555;
+}
+
+.value {
+  color: #0078d4;
+  margin-left: 10px;
+}
+
+/* Actions */
+.card-actions {
+  display: grid;
+  grid-template-columns: repeat(2, auto); /* Two buttons side by side */
+  gap: 10px;
+}
+
+.card-actions button {
+  background-color: #0078d4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+
+.card-actions button:hover {
+  background-color: #005a9e;
+}
+
+.card-actions button i {
+  margin-right: 5px;
+}
+
+.card-actions button:nth-child(2) {
+  background-color: #d9534f;
+}
+
+.card-actions button:nth-child(2):hover {
+  background-color: #c9302c;
+}

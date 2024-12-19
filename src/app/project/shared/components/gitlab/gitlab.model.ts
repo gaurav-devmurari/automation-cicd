@@ -1,23 +1,22 @@
-export interface GitLab{
-  stages: string[],
-  ruless: rules[]  
-  jobs: jobs[]  
+export interface GitLab {
+  stages: string[];
+  rules: Rules;
+  rule_name: string[];
+  jobs: Job[];
 }
 
-export interface rules{
-  rule: string,
-  ruleDefination: ruleDef[]
+export interface Rules {
+  [key: string]: Rule[];
 }
 
-export interface ruleDef{
-  keyword: string,
-  value: string
+export interface Rule {
+  keyword: string;
+  value: string;
 }
 
-export interface jobs{
-  job_name: string,
-  stage: string,
-  script: string[],
-  rules: string
+export interface Job {
+  job_name: string;
+  stage: string;
+  rules: string[];
+  script: string[];
 }
-

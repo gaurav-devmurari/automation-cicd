@@ -1,13 +1,9 @@
-export interface BitBucket{
-  branch: branchesOrTags[],
-  tag: branchesOrTags[]
+export interface BitBucket {
+  type: 'branch' | 'tag';
+  name: string;
+  steps: ISteps[];
 }
-export interface branchesOrTags{
-  name: string,
-  steps: steps[]
-}
-
-export interface steps{
-  name: string,
-  action: string[]
+export interface ISteps {
+  name: string;
+  actions: string[];
 }

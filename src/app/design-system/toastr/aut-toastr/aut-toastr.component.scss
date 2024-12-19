@@ -1,57 +1,19 @@
-.toarst {
-  animation: fadeInAnimation;
-  animation-duration: 10ms;
-  animation-iteration-count: infinite;
+.toastrWrapper {
+  @apply fixed left-0 right-0 w-fit m-auto top-14 z-[100];
 }
-
-@keyframes fadeInAnimation {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 .toarst {
-  @apply grid grid-flow-col auto-cols-max rounded-md max-w-fit text-sm p-1 text-justify hover:cursor-pointer z-50;
-  &:hover {
-    box-shadow: 1px 1px 7px black;
-  }
+  @apply grid grid-flow-col h-fit auto-cols-max rounded-md max-w-fit text-sm p-1 text-justify hover:cursor-pointer shadow-[0px_0px_10px_1px_black];
   // -----------------------types
   &--success {
     @apply bg-[#51a351];
-
-    &:hover {
-      @apply bg-[#6ad46a];
-    }
   }
   &--info {
     @apply bg-[#2f96b4];
-    &:hover {
-      @apply bg-[#39b7de];
-    }
   }
   &--warning {
     @apply bg-[#f89406];
-    &:hover {
-      @apply bg-[#fdb248];
-    }
   }
   &--danger {
-    @apply bg-[#bd362f];
-    &:hover {
-      @apply bg-[#f1453c];
-    }
+    @apply bg-[#e77069];
   }
-  // -----------------------iteration count
-  &--infinite {
-    animation: fadeInAnimation ease 1s;
-    animation-iteration-count: infinite;
-  }
-  &--once {
-    animation: fadeInAnimation ease 1s;
-    animation-iteration-count: 1;
-  }
-  // ---------------------------position
 }

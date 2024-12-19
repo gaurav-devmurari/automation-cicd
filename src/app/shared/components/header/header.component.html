@@ -14,7 +14,7 @@
               >Pipelines</aut-link
             >
           </li>
-          <li [hidden]="isHidden" class="ml-10">
+          <li class="ml-10">
             <aut-link [routerLink]="['/pipeline/create']" variant="secondary"
               >Create Pipelines</aut-link
             >
@@ -26,16 +26,20 @@
           class="mr-5 rounded-lg bg-ebony hover:scale-105 px-2 py-1"
           *ngIf="isHidden"
         >
-          <i class="fa-solid fa-arrow-right-to-bracket content-center"></i>
-          <a routerLink="/user/sign-in" class="ml-1"> Sign In </a>
+          <a routerLink="/user/sign-in" class="ml-1">
+            <i class="fa-solid fa-arrow-right-to-bracket content-center"></i>
+            <div class="lD:inline-block mD:hidden ml-1">Sign In</div>
+          </a>
         </div>
 
         <div
           class="mr-5 rounded-lg bg-ebony hover:scale-105 px-2 py-1"
           *ngIf="isHidden"
         >
-          <i class="fa-solid fa-user-plus content-center"></i>
-          <a routerLink="/user/sign-up" class="text-left ml-1"> Sign Up </a>
+          <a routerLink="/user/sign-up" class="text-left ml-1">
+            <i class="fa-solid fa-user-plus content-center"></i>
+            <div class="lD:inline-block mD:hidden ml-1">Sign Up</div>
+          </a>
         </div>
         <div
           class="mr-5 rounded-lg bg-ebony hover:scale-105 px-2 py-1 hover:cursor-pointer"

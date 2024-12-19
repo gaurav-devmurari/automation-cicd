@@ -9,5 +9,5 @@ export enum Project {
   angular = 'Angular',
   react = 'React',
   nodeJS = 'NodeJS',
-  NET = '.NTE',
+  NET = '.NET',
 }

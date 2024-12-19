@@ -5,7 +5,7 @@
     <div class="heading">Pipeline Details</div>
     <form [formGroup]="combinedForm" (ngSubmit)="onSubmit()">
       <div
-        class="overflow-y-scroll border-2 rounded-lg h-[450px] px-8 py-3 backdrop-blur-md"
+        class="overflow-y-scroll border-slate border-2 rounded-lg h-[450px] px-8 py-3 bg-ebony"
       >
         <select
           id="repoName"
@@ -41,40 +41,24 @@
             {{ item.lable }}
           </option>
         </select>
-        <div class="mt-3 ml-2">
-          <input
-            type="checkbox"
-            (change)="toggle()"
-            id="check"
-            formControlName="manualEntered"
-          />
-          <label for="check" class="ml-2 text-pewter"
-            >Enter Version Manually</label
-          >
-        </div>
         <aut-input
-          placeholder="Node Version (ex. 18.0.0)"
+          id="nodeVersion"
+          name="nodeVersion"
+          placeholder="Node Version (ex. 18.00.00)"
           formControlName="nodeVersion"
-          [hidden]="hide"
         ></aut-input>
-        <select
-          class="selectClasses"
-          formControlName="nodeVersion"
-          [hidden]="!hide"
+        <div
+          *ngIf="
+            combinedForm.controls['nodeVersion'].invalid &&
+            combinedForm.controls['nodeVersion'].touched &&
+            combinedForm.controls['nodeVersion'].value.length != 0
+          "
+          class="text-red-700"
         >
-          <option value="" disabled selected class="bg-onyx text-pewter">
-            Node Version
-          </option>
-          <option
-            *ngFor="let version of versions"
-            class="bg-onyx text-pewter"
-            [value]="version"
-          >
-            {{ version }}
-          </option>
-        </select>
-        <ng-template ngIf="repoName">
-          <div [ngSwitch]="repoName">
+          Invalid Input
+        </div>
+        <ng-template ngIf="projectType">
+          <div *ngIf="projectType" [ngSwitch]="repoName">
             <app-bitbucket
               #bitBucket
               *ngSwitchCase="repository.bitbucket"
@@ -103,7 +87,11 @@
         </ng-template>
       </div>
       <div class="lD:text-right mD:text-center mt-1">
-        <aut-button type="submit" variant="success" shape="cylinder">
+        <aut-button
+          type="submit"
+          variant="success"
+          [disabled]="combinedForm.invalid"
+        >
           {{ isYamlUpdated ? 'Update' : 'Submit' }}
         </aut-button>
       </div>
@@ -111,7 +99,7 @@
   </div>
   <div class="p-4">
     <div class="heading">YAML Code</div>
-    <div class="h-[450px]">
+    <div class="h-[450px] border-slate border-2">
       <ngx-monaco-editor
         *ngIf="isBrowser"
         [options]="editorOptions_dark"
@@ -119,14 +107,13 @@
       ></ngx-monaco-editor>
     </div>
     <div class="lD:text-right mD:text-center mt-1">
-      <aut-button
+      <!-- <aut-button
         type="button"
         variant="success"
-        shape="cylinder"
         [disabled]=""
         (click)="updateYAML()"
         >Update</aut-button
-      >
+      > -->
     </div>
   </div>
 </div>

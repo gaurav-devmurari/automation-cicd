@@ -73,7 +73,7 @@ const route: Routes = [
     ToastrComponent,
     AutToastrComponent,
     CardComponent,
-    AutCardComponent
+    AutCardComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(route), FormsModule],
   exports: [

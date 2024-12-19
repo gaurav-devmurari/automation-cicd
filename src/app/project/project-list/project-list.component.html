@@ -1,57 +1,28 @@
-<div class="min-h-screen lD:w-[80vw] mD:w-[90vw] m-auto text-white flex">
+<div class="lD:w-[80vw] mD:w-[90vw] m-auto text-white flex">
   <div class="w-full mt-20">
+    <div class="no-pipelines-container" *ngIf="projectList.length == 0">
+      <img
+        src="assets/image/empty-box.png"
+        alt="No Pipelines"
+        class="no-pipelines-image"
+      />
+      <div class="no-pipelines-heading">No Pipelines Available!</div>
+      <div class="no-pipelines-text">
+        It looks like you haven't created any pipelines yet. Start building your
+        CI/CD pipelines now and automate your workflow!
+      </div>
+    </div>
+
     <div
       class="overflow-auto p-10 border-charcoal rounded-lg lD:min-h-screen mD:h-[75vh] grid lD:grid-cols-3 mD:grid-cols-2 gap-10"
     >
       <div *ngFor="let project of projectList; let index = index">
-        <aut-card [index]="index" [project]="project"></aut-card>
+        <aut-card
+          [index]="index"
+          [project]="project"
+          (updateList)="updateList($event)"
+        ></aut-card>
       </div>
     </div>
   </div>
 </div>
-<!-- <div
-        class="sticky top-0 mx-2 my-2 text-center font-semibold text-base grid lD:grid-cols-[6%_16%_16%_23%_23%_16%] mD:grid-cols-[6%_17%_15%_23%_23%_16%]"
-      >
-        <div class="heading p-1">No.</div>
-        <div class="heading p-1">Repository</div>
-        <div class="heading p-1">Project</div>
-        <div class="heading p-1">Created On</div>
-        <div class="heading p-1">Updated On</div>
-        <div class="heading p-1">Action</div>
-      </div>
-      <div
-        class="p-2 mx-1 hover:bg-onyx rounded-lg select-none grid lD:grid-cols-[6%_16%_16%_23%_23%_16%] mD:grid-cols-[6%_17%_15%_23%_23%_16%]"
-        *ngFor="let project of projectList; let index = index"
-      >
-        <div class="mr-1 text-center">
-          <div class="border-charcoal border-2 rounded-lg">
-            {{ index + 1 }}
-          </div>
-        </div>
-        <div class="text-center">{{ project.repoName }}</div>
-        <div class="text-center">{{ project.projectType }}</div>
-        <div class="text-center">{{ project.createdAt }}</div>
-        <div class="text-center">{{ project.updatedAt }}</div>
-        <div
-          class="grid lD:grid-cols-2 lD:gap-0 mD:grid-cols-1 mD:gap-3 text-center"
-        >
-          <div>
-            <aut-button
-              shape="cylinder"
-              type="button"
-              (click)="getProjectDetails(project.id)"
-            >
-              Edit
-            </aut-button>
-          </div>
-          <div>
-            <aut-button variant="danger" shape="cylinder"> Delete </aut-button>
-          </div>
-        </div>
-      </div>
-      <aut-toastr
-        type="warning"
-        toastrTitle="Not Authorizied"
-        toastrMessage='SignIn to see projects'
-        *ngIf="!token"
-      ></aut-toastr> -->

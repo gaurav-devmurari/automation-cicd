@@ -6,7 +6,6 @@
 // }
 
 .navbar-fixed-top.scrolled {
-  backdrop-filter: blur(50px);
-  // @apply py-1 bg-black;
+  @apply bg-spaceGray shadow-[0px_0px_10px_0px_var(--ebony)];
   transition: background-color 100ms ease-in-out;
 }
